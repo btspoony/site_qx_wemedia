@@ -7,11 +7,11 @@
 <div class="middle-box text-center loginscreen  animated fadeInDown">
     <div>
         <div>
-            <h1 class="logo-name">H+</h1>
+            <h1 class="logo-name">WM</h1>
         </div>
         <h3>欢迎使用后台管理系统</h3>
 
-        <form class="m-t" method="post" role="form" action="<?= get_url('power/login'); ?>">
+        <form class="m-t" method="post" role="form" action="<?= get_url('admin/power/login'); ?>">
             <div class="form-group">
                 <?= $error_message; ?>
             </div>

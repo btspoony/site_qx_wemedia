@@ -75,12 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => '127.0.0.1',
 	'username' => 'root',
-	'password' => '',
-	'database' => 'gtsn_data',
+	'password' => 'Passw0rd',
+	'database' => 'site_wemedia',
 	'dbdriver' => 'mysqli',
-	'dbprefix' => 'gt_',
+	'dbprefix' => 'wm_',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
