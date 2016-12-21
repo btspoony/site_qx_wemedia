@@ -24,11 +24,8 @@ class Power extends DEFAULT_Controller {
                     $this->session->set_userdata($admin_row);
                     //修改登录时间
                     $this->admin_model->update_last_login_time($post['username']);
-<<<<<<< HEAD
                     redirect('/admin/main/index');
-=======
-                    redirect('admin/main/index');
->>>>>>> c30662c2b9ed792d6743a8625af800627dd9c020
+
                 } else {
                     $error_message = show_message('login');
                 }
@@ -42,11 +39,7 @@ class Power extends DEFAULT_Controller {
      */
     public function logout() {
         $this->session->sess_destroy(); //注销所有session变量
-<<<<<<< HEAD
         redirect('/admin/power/login', 'refresh'); //这是退出到登陆页面
-=======
-        redirect('admin/power/login', 'refresh'); //这是退出到登陆页面
->>>>>>> c30662c2b9ed792d6743a8625af800627dd9c020
     }
 
     /**
