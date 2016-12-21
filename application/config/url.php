@@ -5,10 +5,10 @@ if (!defined('BASEPATH'))
 
 //图片地址配置
 $config["image_server_url"] = array(
-    "http://www.qx.cc/"
+    "http://www.qx.cc/public/"
 );
 
 //jscss地址配置
 $config["jscss_server_url"] = array(
-    "http://www.qx.cc/"
+    "http://www.qx.cc/public/"
 );
