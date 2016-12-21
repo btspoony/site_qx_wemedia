@@ -67,4 +67,14 @@ class Cdk extends TOP_Controller {
         }
         $this->lib_common->returnCdk(208);
     }
+    
+    function checkNoCdk() {
+        $data = $this->input->post();
+        //礼包卷已领完
+        $cdk_data = $this->cdk_model->get_cdk_by_type($data['type']);
+        if (empty($cdk_data)) {
+            $this->lib_common->returnCdk(206);
+        } 
+        $this->lib_common->returnCdk(200);
+    }
 }
