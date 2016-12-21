@@ -5,11 +5,11 @@
 class Main extends DEFAULT_Controller {
 
     public function index() {
-        $this->load->view('/main/index');
+        $this->load->view('/admin/main/index');
     }
     
     public function content() {
-        $this->load->view('/main/content');
+        $this->load->view('/admin/main/content');
     }
 
 }

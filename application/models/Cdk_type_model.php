@@ -46,6 +46,8 @@ class Cdk_type_model extends MY_Model {
             'type_name' => $params['type_name'],
             'type_desc' => $params['type_desc'],
             'type_status' => $params['type_status'],
+            'type_code' => $params['type_code'],
+            'type_url' => $params['type_url'],
         );
         $data = $this->get_update_params($data);
         return $this->db->update(self::$_table, $data, compact('type_id'));
@@ -76,6 +78,8 @@ class Cdk_type_model extends MY_Model {
             'type_name'     => $params['type_name'],
             'type_desc'     => $params['type_desc'],
             'type_status'   => $params['type_status'],
+            'type_code'   => $params['type_code'],
+            'type_url'   => $params['type_url'],
             'is_del'        => NO_DEL
         );
         $data = $this->get_create_params($data);
@@ -117,5 +121,15 @@ class Cdk_type_model extends MY_Model {
         return $this->db->where($params)->get(self::$_table)->row_array();
     }
   
+    function get_result_by_type_code($type_code = null) {
+        if (empty($type_code)) {
+            return false;
+        }
+        $params = array(
+            'is_del' => NO_DEL,
+            'type_code' => $type_code,
+        );
+        return $this->db->where($params)->get(self::$_table)->row_array();
+    }
 
 }

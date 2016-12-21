@@ -1,4 +1,4 @@
-<?php load_view('elements/header'); ?>
+<?php load_view('admin/elements/header'); ?>
 <script>if (window.top !== window.self) {
         window.top.location = window.location;
     }
@@ -27,4 +27,4 @@
         </form>
     </div>
 </div>
-<?php load_view('elements/footer'); ?>
+<?php load_view('admin/elements/footer'); ?>

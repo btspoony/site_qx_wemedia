@@ -16,7 +16,7 @@
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:;" class="active J_menuTab" data-id="<?=get_url('main/index');?>">首页</a>
+                        <a href="javascript:;" class="active J_menuTab" data-id="<?=get_url('admin/main/index');?>">首页</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
@@ -30,10 +30,10 @@
                         <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
                     </ul>
                 </div>
-                <a href="<?=get_url('power/logout');?>" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+                <a href="<?=get_url('admin/power/logout');?>" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?=get_url('main/content');?>" frameborder="0" data-id="<?=get_url('main/content');?>" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?=get_url('admin/main/content');?>" frameborder="0" data-id="<?=get_url('admin/main/content');?>" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2016 <a href="javascript:void(0)" target="_blank">后台管理系统</a>

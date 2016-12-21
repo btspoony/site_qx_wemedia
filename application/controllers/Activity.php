@@ -7,13 +7,19 @@
  */
 
 class Activity extends TOP_Controller{
+    
     function __construct() {
         parent::__construct();
     }
     
-    
+    /**
+     * 首页
+     * @param type $viewname
+     */
     function index($viewname = null) {
-        $this->load->view('activity/index');
+        $this->load->view('activity/'.$viewname);
     }
+    
+    
 }
 

@@ -1,4 +1,4 @@
-<?php load_view('elements/header'); ?>
+<?php load_view('admin/elements/header'); ?>
 <body class="gray-bg">
     <div class="row  border-bottom white-bg dashboard-header">
         <div class="col-sm-12">

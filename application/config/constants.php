@@ -3,19 +3,18 @@
 define('PWD_MD5',                   1);  //md5加密方式
 define('PWD_PRE_SALT',              2);  //前置验证串的加密方式
 define('PWD_SUF_SALT',              3);  //后置验证串的加密方式
-define('PWD_MCRYPT',              	  4);  //MCRYPT可逆加密方式
+define('PWD_MCRYPT',                4);  //MCRYPT可逆加密方式
 
 /* 时候开启url重写 */
 define('IF_REWRITE', false); //是否开启了重写
-
-//台币兑换人民币
-define('TB_RATE_RMB',4.75);
 
 /*删除状态*/
 define('NO_DEL', 0);    //未删除
 define('YES_DEL', 1);   //已删除
 
-
+/*微信配置信息*/
+define('APPID', "wxdf6113a6b40bd3b0");    //未删除
+define('APPSECRET', "");   //已删除
 
 
 defined('BASEPATH') OR exit('No direct script access allowed');

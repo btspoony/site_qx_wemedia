@@ -2,7 +2,7 @@
     RewriteEngine on
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond $1 !^(index.html|index.php|robots.txt|favicon.ico|css|doc|html|images|js|upload|public)
+	RewriteCond $1 !^(crossdomain.xml|index.html|index.php|robots.txt|favicon.ico|css|doc|html|images|js|upload|public)
 	RewriteRule ^(.*)$ index.php/$1 [L]
 </IfModule>
     

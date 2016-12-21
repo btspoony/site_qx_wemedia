@@ -1,4 +1,4 @@
-<?php load_view('elements/header'); ?>
+<?php load_view('admin/elements/header'); ?>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="col-sm-12">
@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <?php load_view('elements/footer'); ?>
+    <?php load_view('admin/elements/footer'); ?>
     <script type="text/javascript">
         /**
          * 表单验证
