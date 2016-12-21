@@ -1,27 +1,5 @@
 <?php load_view('elements/header'); ?>
-<style>
-#preview {
-  position: absolute;
-
-  height: 640px;
-  width: 360px;
-
-  margin: 10px;
-  border: 3px dotted #ff6666;
-}
-#app {
-  margin-left: 370px;
-  padding: 10px;
-}
-#app >div{
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-}
-#app .row{
-  margin-top: 10px;
-}
-
-</style>
+<link href="<?= jscss_path('default/css/app.css'); ?>" rel="stylesheet">
 <body>
 
 <div id="preview"></div>
@@ -44,20 +22,40 @@
   <div class="container-fluid">
     <!--工具栏-->
     <div class="row">
-      <div class="col-xs-10">
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary" @click="addPanel"><span class="glyphicon glyphicon-stop"></span></button>
-          <button type="button" class="btn btn-primary" @click="addText"><span class="glyphicon glyphicon-font"></span></button>
-          <button type="button" class="btn btn-primary" @click="addImage"><span class="glyphicon glyphicon-picture"></span></button>
-        </div>
-      </div>
-      <div class="col-xs-2 text-right">
-        <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+      <div class="col-xs-12 btn-group">
+        <button type="button" class="btn btn-primary" @click="addPanel"><span class="glyphicon glyphicon-stop"></span></button>
+        <button type="button" class="btn btn-primary" @click="addText"><span class="glyphicon glyphicon-font"></span></button>
+        <button type="button" class="btn btn-primary" @click="addImage"><span class="glyphicon glyphicon-picture"></span></button>
       </div>
     </div>
     <!--内容框体-->
-    
+    <div class="row editor-view">
+      <ul class="view-toolbar">
+        <li><span class="label label-info">页数</span></li>
+        <li v-for="(page, index) in pages">
+          <button type="button" class="btn btn-sm btn-default" :class="{ active: (currentPage==index) }">{{index+1}}</button>
+        </li>
+        <li><button type="button" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-plus"></span></button></li>
+      </ul>
+      <div class="panel panel-default view-content">
+        <button type="button" class="btn btn-danger pull-right" style="margin-top: 3px; margin-right: 3px;">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+        <div class="panel-heading">
+          <span>第{{currentPage+1}}页</span>
+        </div>
+        <div class="panel-body">
+          <h4 v-if="isEmpty">无内容元素</h4>
+          <!--<element-component></element-component>-->
+        </div>
+      </div>
+    </div>
   </div>
+</script>
+
+<!-- Editing 元素模块 -->
+<script type="text/x-template" id="element-component">
+      Basic panel example
 </script>
 
 <!-- preview 的模版 -->

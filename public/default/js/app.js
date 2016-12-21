@@ -1,14 +1,39 @@
 "use strict";
 
-var vm = new Vue({
+let store = {
+  pages: [{
+    elements: [],
+  }],
+};
+
+/**
+ *  Preview View
+ */
+let previewVm = new Vue({
+  el: '#preview'
+});
+
+/**
+ * Editting 元素组件
+ */
+Vue.component('element-component', {
+  template: "#element-component",
+
+})
+
+/**
+ *  Main View
+ */
+let vm = new Vue({
   el: '#app',
   // ============ 生命周期 ==============
-  mounted: function(){
-  },
+  // mounted: function(){
+  // },
   // ============ 属性 =================
   data: function(){
     return {
-      currentView: 'editing'
+      currentView: 'editing',
+      store: store
     };
   },
   // ============ 计算属性 =================
@@ -24,6 +49,21 @@ var vm = new Vue({
     // 编辑Tab组件
     editing: {
       template: '#tab-editing',
+      data: function(){
+        return {
+          currentPage: 0,
+        };
+      },
+      computed:{
+        pages: function(){ return store.pages; },
+        isEmpty: function(){
+          if( !store.pages[this.currentPage] ){
+            return true;
+          }
+          let pageData = store.pages[this.currentPage];
+          return pageData.elements.length == 0;
+        }
+      },
       methods: {
         addPanel: function( evt ){
           console.log(evt);
