@@ -52,13 +52,15 @@
         <div class="panel-body">
           <div class="container-fluid">
             <h4 v-if="isEmpty">无内容元素</h4>
-            <element-component
+            <element-editor-comp
               v-for="(element, index) in currentPageElements"
+              :key="element.id"
+
               :define="element"
               :index="index"
               :current="currentElement"
               @current="currentElement = arguments[0];">
-            </element-component>
+            </element-editor-comp>
           </div>
         </div>
       </div>
@@ -67,11 +69,11 @@
 </script>
 
 <!-- Editing 元素模块 -->
-<script type="text/x-template" id="element-component">
+<script type="text/x-template" id="element-editor-comp">
   <div class="row view-element-define"
       :class="{ active: (index===current) }"
       @click="setCurrent">
-      Basic panel example {{index}}
+      Basic panel {{index}}
   </div>
 </script>
 

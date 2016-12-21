@@ -1,3 +1,4 @@
+/* =================== preview =================== */
 #preview {
   position: absolute;
 
@@ -7,6 +8,11 @@
   margin: 10px;
   border: 2px solid #666;
 }
+#preview div{
+  position: absolute;
+}
+
+/* =================== app =================== */
 #app {
   position: relative;
 
