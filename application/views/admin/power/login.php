@@ -7,7 +7,7 @@
 <div class="middle-box text-center loginscreen  animated fadeInDown">
     <div>
         <div>
-            <h1 class="logo-name">H+</h1>
+            <h1 class="logo-name">WM</h1>
         </div>
         <h3>欢迎使用后台管理系统</h3>
 

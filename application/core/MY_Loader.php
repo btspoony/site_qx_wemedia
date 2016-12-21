@@ -14,7 +14,7 @@ class MY_Loader extends CI_Loader{
 		$this->_ci_view_paths = array(VIEWPATH.'admin'.DIRECTORY_SEPARATOR=>true);
 	}
         
-        public function top_themes_on() {
+  public function top_themes_on() {
 //		$this->_ci_view_paths = array(VIEWPATH.'admin'.DIRECTORY_SEPARATOR=>true);
 	}
 

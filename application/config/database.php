@@ -75,12 +75,19 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => '127.0.0.1',
 	'username' => 'root',
+<<<<<<< HEAD
 	'password' => '',
 	'database' => 'cdk',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => 'c_',
+=======
+	'password' => 'Passw0rd',
+	'database' => 'site_wemedia',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => 'wm_',
+>>>>>>> c30662c2b9ed792d6743a8625af800627dd9c020
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
