@@ -23,9 +23,9 @@
     <!--工具栏-->
     <div class="row">
       <div class="col-xs-12 btn-group">
-        <button type="button" class="btn btn-primary" @click="addPanel"><span class="glyphicon glyphicon-stop"></span></button>
-        <button type="button" class="btn btn-primary" @click="addText"><span class="glyphicon glyphicon-font"></span></button>
-        <button type="button" class="btn btn-primary" @click="addImage"><span class="glyphicon glyphicon-picture"></span></button>
+        <button type="button" class="btn btn-primary" @click="addElement('div')"><span class="glyphicon glyphicon-stop"></span></button>
+        <button type="button" class="btn btn-primary" @click="addElement('text')"><span class="glyphicon glyphicon-font"></span></button>
+        <button type="button" class="btn btn-primary" @click="addElement('image')"><span class="glyphicon glyphicon-picture"></span></button>
       </div>
     </div>
     <!--内容框体-->
@@ -33,9 +33,14 @@
       <ul class="view-toolbar">
         <li><span class="label label-info">页数</span></li>
         <li v-for="(page, index) in pages">
-          <button type="button" class="btn btn-sm btn-default" :class="{ active: (currentPage==index) }">{{index+1}}</button>
+          <button type="button" class="btn btn-sm btn-default"
+            :class="{ active: (currentPage==index) }"
+            @click="currentPage = index">{{index+1}}</button>
         </li>
-        <li><button type="button" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-plus"></span></button></li>
+        <li>
+          <button type="button" class="btn btn-xs btn-success"
+            @click="addPage"><span class="glyphicon glyphicon-plus"></span></button>
+        </li>
       </ul>
       <div class="panel panel-default view-content">
         <button type="button" class="btn btn-danger pull-right" style="margin-top: 3px; margin-right: 3px;">
@@ -45,8 +50,16 @@
           <span>第{{currentPage+1}}页</span>
         </div>
         <div class="panel-body">
-          <h4 v-if="isEmpty">无内容元素</h4>
-          <!--<element-component></element-component>-->
+          <div class="container-fluid">
+            <h4 v-if="isEmpty">无内容元素</h4>
+            <element-component
+              v-for="(element, index) in currentPageElements"
+              :define="element"
+              :index="index"
+              :current="currentElement"
+              @current="currentElement = arguments[0];">
+            </element-component>
+          </div>
         </div>
       </div>
     </div>
@@ -55,7 +68,11 @@
 
 <!-- Editing 元素模块 -->
 <script type="text/x-template" id="element-component">
-      Basic panel example
+  <div class="row view-element-define"
+      :class="{ active: (index===current) }"
+      @click="setCurrent">
+      Basic panel example {{index}}
+  </div>
 </script>
 
 <!-- preview 的模版 -->

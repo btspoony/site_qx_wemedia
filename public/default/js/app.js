@@ -1,9 +1,33 @@
 "use strict";
 
+// Class定义
+class ViewPage {
+  constructor(){
+    this.elements = [];
+  }
+}
+
+class BaseElement {
+  constructor(){
+    this.id = store.cache.element_index++;
+  }
+}
+
+class DivElement extends BaseElement {
+}
+
+class TextElement extends BaseElement {
+}
+
+class ImageElement extends BaseElement {
+}
+
+// 公共Store
 let store = {
-  pages: [{
-    elements: [],
-  }],
+  cache: {
+    element_index: 0,
+  },
+  pages: [ new ViewPage() ],
 };
 
 /**
@@ -18,7 +42,12 @@ let previewVm = new Vue({
  */
 Vue.component('element-component', {
   template: "#element-component",
-
+  props: ["define","index","current"],
+  methods: {
+    setCurrent: function(){
+      this.$emit('current', Number(this.index) );
+    }
+  },
 })
 
 /**
@@ -52,27 +81,40 @@ let vm = new Vue({
       data: function(){
         return {
           currentPage: 0,
+          currentElement: -1,
         };
       },
+      mounted: function(){
+        this.currentElement = this.isEmpty?-1:0;
+      }, 
       computed:{
         pages: function(){ return store.pages; },
-        isEmpty: function(){
+        currentPageElements: function(){
           if( !store.pages[this.currentPage] ){
-            return true;
+            return [];
           }
-          let pageData = store.pages[this.currentPage];
-          return pageData.elements.length == 0;
+          return store.pages[this.currentPage].elements;
+        },
+        isEmpty: function(){
+          return this.currentPageElements.length == 0;
         }
       },
       methods: {
-        addPanel: function( evt ){
-          console.log(evt);
+        addPage: function(){
+          store.pages.push( new ViewPage() );
+          this.currentPage = store.pages.length - 1;
         },
-        addText: function( evt ){
-          console.log(evt);
-        },
-        addImage: function( evt ){
-          console.log(evt);
+        addElement: function( type ){
+          switch (type) {
+            case 'div':
+              this.currentPageElements.push( new DivElement() );
+              break;
+          
+            default:
+              break;
+          }
+          // set current 
+          if( this.currentElement< 0 ) this.currentElement = 0;
         },
       },
     },

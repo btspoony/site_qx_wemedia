@@ -21,10 +21,14 @@
   min-height: 600px;
 
   margin-top: 41px;
+  padding-top: 10px;
   border-left: 1px solid #ddd;
 }
 #app .row{
   margin-top: 10px;
+}
+#app .row:first-child{
+  margin-top: 0px;
 }
 #app .editor-view .view-toolbar{
   position: absolute;
@@ -45,4 +49,14 @@
   position: relative;
 
   margin-left: 60px;
+}
+
+#app .view-element-define{
+  padding: 5px;
+
+  border: 1px dashed #336;
+  border-radius: 3px;
+}
+#app .view-element-define.active {
+  background-color: #dfd;
 }
