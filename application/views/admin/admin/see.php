@@ -1,4 +1,4 @@
-<?php load_view('elements/header'); ?>
+<?php load_view('admin/elements/header'); ?>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -29,16 +29,16 @@
                                     <td><?= $v['status'] == $model_config['status_quit'] ? '离职' : '正常'; ?></td>
                                     <td><?= $v['create_time']; ?></td>
                                     <td>
-                                        <a href="<?= get_url('admin/edit/' . $v['admin_id']); ?>">编辑</a>
-                                        <a href="<?= get_url('admin/delete/' . $v['admin_id']); ?>">删除</a>
+                                        <a href="<?= get_url('admin/admin/edit/' . $v['admin_id']); ?>">编辑</a>
+                                        <a href="<?= get_url('admin/admin/delete/' . $v['admin_id']); ?>">删除</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                    <?php load_view('elements/page'); ?>
+                    <?php load_view('admin/elements/page'); ?>
                 </div>
             </div>
         </div>
     </div>
-    <?php load_view('elements/footer'); ?>
+    <?php load_view('admin/elements/footer'); ?>

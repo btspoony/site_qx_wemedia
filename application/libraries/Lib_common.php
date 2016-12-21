@@ -45,7 +45,7 @@ class Lib_common extends Library {
     public function redirect_add($url = null, $flag = null, $msg = null, $time = 3) {
         $msg = ($flag) ? "添加成功" : (!empty($msg) ? $msg : "添加失败");
         $params .= "url=" . get_url($url) . "&msg=" . $msg . "&time=" . $time;
-        redirect('/power/mate?' . $params);
+        redirect('/admin/power/mate?' . $params);
     }
 
     /**
@@ -58,7 +58,7 @@ class Lib_common extends Library {
     public function redirect_modify($url = null, $flag = null, $msg = null, $time = 3) {
         $msg = ($flag) ? "修改成功" : (!empty($msg) ? $msg : "修改失败");
         $params .= "url=" . get_url($url) . "&msg=" . $msg . "&time=" . $time;
-        redirect('/power/mate?' . $params);
+        redirect('/admin/power/mate?' . $params);
     }
     
     /**

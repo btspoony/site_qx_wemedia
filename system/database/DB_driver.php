@@ -582,7 +582,7 @@ abstract class CI_DB_driver {
      */
     public function query($sql, $binds = FALSE, $return_object = NULL) {
         if (ENVIRONMENT == 'development') {
-            echo $sql . '<br />';
+//            echo $sql . '<br />';
         }
 
         if ($sql === '') {

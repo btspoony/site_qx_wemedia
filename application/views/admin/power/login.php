@@ -1,4 +1,4 @@
-<?php load_view('elements/header'); ?>
+<?php load_view('admin/elements/header'); ?>
 <script>if (window.top !== window.self) {
         window.top.location = window.location;
     }
@@ -11,7 +11,7 @@
         </div>
         <h3>欢迎使用后台管理系统</h3>
 
-        <form class="m-t" method="post" role="form" action="<?= get_url('power/login'); ?>">
+        <form class="m-t" method="post" role="form" action="<?= get_url('admin/power/login'); ?>">
             <div class="form-group">
                 <?= $error_message; ?>
             </div>
@@ -27,4 +27,4 @@
         </form>
     </div>
 </div>
-<?php load_view('elements/footer'); ?>
+<?php load_view('admin/elements/footer'); ?>

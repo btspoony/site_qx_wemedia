@@ -7,6 +7,7 @@
  */
 
 class Activity extends TOP_Controller{
+    
     function __construct() {
         parent::__construct();
     }
@@ -15,5 +16,7 @@ class Activity extends TOP_Controller{
     function index($viewname = null) {
         $this->load->view('activity/index');
     }
+    
+    
 }
 

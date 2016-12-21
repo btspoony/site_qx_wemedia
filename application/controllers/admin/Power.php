@@ -24,13 +24,13 @@ class Power extends DEFAULT_Controller {
                     $this->session->set_userdata($admin_row);
                     //修改登录时间
                     $this->admin_model->update_last_login_time($post['username']);
-                    redirect('/main/index');
+                    redirect('/admin/main/index');
                 } else {
                     $error_message = show_message('login');
                 }
             }
         }
-        $this->load->view('/power/login', compact('error_message'));
+        $this->load->view('/admin/power/login', compact('error_message'));
     }
 
     /**
@@ -38,7 +38,7 @@ class Power extends DEFAULT_Controller {
      */
     public function logout() {
         $this->session->sess_destroy(); //注销所有session变量
-        redirect('power/login', 'refresh'); //这是退出到登陆页面
+        redirect('/admin/power/login', 'refresh'); //这是退出到登陆页面
     }
 
     /**
@@ -51,20 +51,20 @@ class Power extends DEFAULT_Controller {
         $msg = $this->input->get('msg');
         //跳转时间
         $time = $this->input->get('time');
-        $this->load->view('/power/mate', compact('url', 'msg', 'time'));
+        $this->load->view('/admin/power/mate', compact('url', 'msg', 'time'));
     }
     
     /**
      * 用户权限
      */
     public function authority() {
-        $this->load->view('/power/authority');
+        $this->load->view('/admin/power/authority');
     }
     
     /**
      * 404
      */
     public function err404() {
-        $this->load->view('/power/err404');
+        $this->load->view('/admin/power/err404');
     }
 }

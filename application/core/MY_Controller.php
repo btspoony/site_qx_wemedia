@@ -60,7 +60,6 @@ class DEFAULT_Controller extends CI_Controller {
         if (!empty($this->admin_id)) {
             $this->action_auth();
         }
-        $this->load->admin_themes_on();
     }
 
     /**
@@ -104,7 +103,7 @@ class DEFAULT_Controller extends CI_Controller {
         if ($actionid == 0  || empty($this->admin_info['powers']) || in_array($actionid, $action_power)) {
             return;
         }
-        redirect('power/authority');
+        redirect('/admin/power/authority');
     }
     
     /**
@@ -125,6 +124,7 @@ class DEFAULT_Controller extends CI_Controller {
         }
         return $powers;
     }
+    
     /**
      * 登陆权限
      * @return type
@@ -145,7 +145,7 @@ class DEFAULT_Controller extends CI_Controller {
             $this->load->vars(array('admin_info' => $this->admin_info));
             //登陆
             if ($this->controller_name == 'power' && $this->action_name == 'login') {
-                redirect('/main/index');
+                redirect('/admin/main/index');
             } else {
                 return;
             }
@@ -153,7 +153,7 @@ class DEFAULT_Controller extends CI_Controller {
         if ($this->controller_name == 'power') {
             return;
         }
-        redirect('/power/login');
+        redirect('/admin/power/login');
     }
 
     public function json_error($message = '', $code = 1) {
@@ -183,7 +183,7 @@ class DEFAULT_Controller extends CI_Controller {
     }
     
     public function err404() {
-        redirect('/power/err404');
+        redirect('/admin/power/err404');
     }
 
 }
