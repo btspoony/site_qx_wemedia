@@ -8,8 +8,8 @@
             抱歉，页面好像去火星了~
         </div>
     </div>
-    <script src="<?= jscss_path('public/js/jquery.min.js?v=2.1.4'); ?>"></script>
-    <script src="<?= jscss_path('public/js/bootstrap.min.js?v=3.3.6'); ?>"></script>
+    <script src="<?= jscss_path('js/jquery.min.js?v=2.1.4'); ?>"></script>
+    <script src="<?= jscss_path('js/bootstrap.min.js?v=3.3.6'); ?>"></script>
 </body>
 
 </html>

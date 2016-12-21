@@ -10,7 +10,7 @@ class Publics extends DEFAULT_Controller {
         // 文件类型
         $ftype = !empty($_FILES['file']['type']) ? substr(strrchr($_FILES['file']['name'], "."), 1) : null;
 
-        $tmp_path = '/upload/' . $ftype . '/' . date('Ymd');
+        $tmp_path = '/public/upload/' . $ftype . '/' . date('Ymd');
 
         if (!is_dir(FCPATH . $tmp_path)) {
             @mkdir(FCPATH . $tmp_path, 0777, true);

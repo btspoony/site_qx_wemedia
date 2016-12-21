@@ -5,7 +5,7 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <span><img alt="image" class="img-circle" src="<?= image_path('public/img/profile_small.jpg'); ?>" /></span>
+                    <span><img alt="image" class="img-circle" src="<?= image_path('img/profile_small.jpg'); ?>" /></span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">
                         <span class="clear">
                             <span class="block m-t-xs"><strong class="font-bold"><?= $admin_info['username']; ?></strong></span>

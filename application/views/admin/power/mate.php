@@ -6,11 +6,11 @@
         <title>欢迎光临后台管理系统</title>
         <meta http-equiv="refresh" content="<?= $time; ?>;URL=<?= $url; ?>">
         <link rel="shortcut icon" href="favicon.ico"> 
-        <link href="<?= jscss_path('public/css/bootstrap.min.css?v=3.3.6'); ?>" rel="stylesheet">
-        <link href="<?= jscss_path('public/css/font-awesome.min.css?v=4.4.0'); ?>" rel="stylesheet">
-        <link href="<?= jscss_path('public/css/plugins/morris/morris-0.4.3.min.css'); ?>" rel="stylesheet">
-        <link href="<?= jscss_path('public/css/animate.min.css'); ?>" rel="stylesheet">
-        <link href="<?= jscss_path('public/css/style.min.css?v=4.1.0'); ?>" rel="stylesheet">
+        <link href="<?= jscss_path('css/bootstrap.min.css?v=3.3.6'); ?>" rel="stylesheet">
+        <link href="<?= jscss_path('css/font-awesome.min.css?v=4.4.0'); ?>" rel="stylesheet">
+        <link href="<?= jscss_path('css/plugins/morris/morris-0.4.3.min.css'); ?>" rel="stylesheet">
+        <link href="<?= jscss_path('css/animate.min.css'); ?>" rel="stylesheet">
+        <link href="<?= jscss_path('css/style.min.css?v=4.1.0'); ?>" rel="stylesheet">
     </head>
     <body class="gray-bg">
         <div class="col-lg-12">

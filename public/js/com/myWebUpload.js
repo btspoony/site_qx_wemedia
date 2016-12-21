@@ -244,9 +244,9 @@
     $.fn.powerWebUpload = function (options) {
         var ele = this;
         if (typeof WebUploader == 'undefined') {
-            var casspath = applicationPath + "public/css/plugins/webuploader/webuploader.css";
+            var casspath = applicationPath + "css/plugins/webuploader/webuploader.css";
             $("<link>").attr({rel: "stylesheet", type: "text/css", href: casspath}).appendTo("head");
-            var jspath = applicationPath + "public/js/plugins/webuploader/webuploader.min.js";
+            var jspath = applicationPath + "js/plugins/webuploader/webuploader.min.js";
             $.getScript(jspath).done(function () {
                 initWebUpload(ele, options);
             })
