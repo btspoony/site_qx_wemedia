@@ -12,6 +12,8 @@ class BaseElement {
     this.id = store.cache.element_index++;
     this.width = "100px";
     this.height = "100px";
+
+    this.align = "left top";
   }
 
   get object(){
@@ -21,6 +23,14 @@ class BaseElement {
     }
     delete obj.id;
     return obj;
+  }
+
+  setOffset( x, y ){
+    // now only "top left"
+    if( this.align == "left top" ){
+      this.left = x;
+      this.top = y;
+    }
   }
   
   set align( v ){
@@ -78,11 +88,9 @@ let previewVm = new Vue({
   // mounted:function(){
   // },
   // ============ 属性 =================
-  data: function(){
-    return {
-      currentPage: 0,
-      store: store
-    };
+  data: {
+    currentPage: 0,
+    store: store
   },
   // ============ 渲染 =================
   render: function (createElement) {
@@ -111,7 +119,52 @@ let previewVm = new Vue({
       attrs: {// 正常的 HTML 特性
         id: 'preview'
       },
+      on: {
+        drop: function( ev ){
+          ev.preventDefault();
+          let data = ev.dataTransfer.getData("text");
+          let drag_data = data.split(":");
+          store.cache.current_element_data.setOffset( (ev.x-drag_data[0])+"px", (ev.y-drag_data[1])+"px" );
+        },
+        dragover: function( ev ){
+          ev.preventDefault();
+          // Set the dropEffect to move
+          ev.dataTransfer.dropEffect = "move";
+        },
+      },
     }, children);
+  }
+});
+
+Vue.component('element-box',{
+  functional: true,
+  render: function (createElement, context){
+    let target = context.data.props.target;
+    let styleObj = {
+      width: target.width,
+      height: target.height,
+      top: target.top,
+      bottom: target.bottom,
+      left: target.left,
+      right: target.right,
+      border: "2px dotted #f33",
+      cursor: "pointer"
+    };
+
+    return createElement('div', {
+      attrs:{
+        draggable: true,
+      },
+      style: styleObj,
+      on: {
+        '!dragstart': function( ev ){
+          let info = ev.offsetX+":"+ev.offsetY; //(ev.x-ev.offsetX)+":"+(ev.y-ev.offsetY)+":"+
+          console.log( info );
+          ev.dataTransfer.effectAllowed = "move";
+          ev.dataTransfer.setData('text', info );
+        }
+      },
+    });
   }
 });
 
@@ -123,26 +176,6 @@ Vue.component('element-archer',{
 
     return createElement('div', {
 
-    });
-  }
-});
-
-Vue.component('element-box',{
-  functional: true,
-  render: function (createElement, context){
-    let targetData = context.data.props.target;
-    let styleObj = {
-      width: targetData.width,
-      height: targetData.height,
-      top: targetData.top,
-      bottom: targetData.bottom,
-      left: targetData.left,
-      right: targetData.right,
-      border: "2px dotted #f33"
-    };
-
-    return createElement('div', {
-      style: styleObj
     });
   }
 });
@@ -194,11 +227,9 @@ let vm = new Vue({
   // mounted: function(){
   // },
   // ============ 属性 =================
-  data: function(){
-    return {
-      currentView: 'editing',
-      store: store
-    };
+  data: {
+    currentView: 'editing',
+    store: store
   },
   // ============ 计算属性 =================
   computed:{
