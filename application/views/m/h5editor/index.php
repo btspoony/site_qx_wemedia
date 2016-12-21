@@ -1,7 +1,7 @@
 <?php load_view('elements/header'); ?>
 <link href="<?= jscss_path('default/css/app.css'); ?>" rel="stylesheet">
 <body>
-
+  
 <div id="preview"></div>
 <main id="app">
   <ul class="nav nav-tabs" role="tablist">
@@ -47,7 +47,7 @@
           <span class="glyphicon glyphicon-trash"></span>
         </button>
         <div class="panel-heading">
-          <span>第{{currentPage+1}}页</span>
+          <span>第 {{currentPage+1}} 页</span>
         </div>
         <div class="panel-body">
           <div class="container-fluid">
@@ -59,7 +59,9 @@
               :define="element"
               :index="index"
               :current="currentElement"
-              @current="currentElement = arguments[0];">
+
+              @current="currentElement=arguments[0];"
+              @remove-element="removeElement(arguments[0]);">
             </element-editor-comp>
           </div>
         </div>
@@ -72,8 +74,57 @@
 <script type="text/x-template" id="element-editor-comp">
   <div class="row view-element-define"
       :class="{ active: (index===current) }"
-      @click="setCurrent">
-      Basic panel {{index}}
+      @click="$emit('current', index );">
+      <div class="col-xs-3">
+        <span class="text-primary">编号: </span><span class="badge">{{ index+1 }}</span>
+      </div> 
+      <div class="col-xs-7">
+        <span class="text-primary">类型: </span><span class="text-muted">{{ define.typename }}</span>
+      </div> 
+      <div class="col-xs-2 text-right">
+        <button type="button" class="btn btn-xs btn-danger"
+          @click="$emit('remove-element', index );">
+          <span class="glyphicon glyphicon-minus"></span>
+        </button>
+      </div>
+      <div class="col-xs-12">
+        <div class="input-group input-group-sm" style="width: 34%;">
+          <span class="input-group-addon">宽</span>
+          <input type="text" class="form-control" v-model="define.w">
+          <span class="input-group-addon" @click="define.toggleW()">{{define.w_unit}}</span>
+        </div>
+        <div class="input-group input-group-sm" style="width: 34%;">
+          <span class="input-group-addon">高</span>
+          <input type="text" class="form-control" v-model="define.h">
+          <span class="input-group-addon" @click="define.toggleH()">{{define.h_unit}}</span>
+        </div>
+        <div v-if="define.type=='div'" class="input-group input-group-sm" style="width: 25%;">
+          <span class="input-group-addon">圆角</span>
+          <input type="text" class="form-control" v-model="define.radius">
+        </div>
+      </div>
+      <template v-if="define.type=='div'||define.type=='text'">
+        <div class="col-xs-9">
+          <div class="input-group input-group-sm" style="width: 30%;">
+            <span class="input-group-addon">R</span>
+            <input type="text" class="form-control" v-model="define.r">
+          </div>
+          <div class="input-group input-group-sm" style="width: 30%;">
+            <span class="input-group-addon">G</span>
+            <input type="text" class="form-control" v-model="define.g">
+          </div>
+          <div class="input-group input-group-sm" style="width: 30%;">
+            <span class="input-group-addon">B</span>
+            <input type="text" class="form-control" v-model="define.b">
+          </div>
+        </div>
+        <div class="col-xs-3" v-show="define.type=='div'">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon">A</span>
+            <input type="text" class="form-control" v-model="define.a">
+          </div>
+        </div>
+      </template>
   </div>
 </script>
 

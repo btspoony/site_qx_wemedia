@@ -1,5 +1,54 @@
 "use strict";
 
+// Closure
+(function() {
+  /**
+   * Decimal adjustment of a number.
+   *
+   * @param {String}  type  The type of adjustment.
+   * @param {Number}  value The number.
+   * @param {Integer} exp   The exponent (the 10 logarithm of the adjustment base).
+   * @returns {Number} The adjusted value.
+   */
+  function decimalAdjust(type, value, exp) {
+    // If the exp is undefined or zero...
+    if (typeof exp === 'undefined' || +exp === 0) {
+      return Math[type](value);
+    }
+    value = +value;
+    exp = +exp;
+    // If the value is not a number or the exp is not an integer...
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+      return NaN;
+    }
+    // Shift
+    value = value.toString().split('e');
+    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+    // Shift back
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+  }
+
+  // Decimal round
+  if (!Math.round10) {
+    Math.round10 = function(value, exp) {
+      return decimalAdjust('round', value, exp);
+    };
+  }
+  // Decimal floor
+  if (!Math.floor10) {
+    Math.floor10 = function(value, exp) {
+      return decimalAdjust('floor', value, exp);
+    };
+  }
+  // Decimal ceil
+  if (!Math.ceil10) {
+    Math.ceil10 = function(value, exp) {
+      return decimalAdjust('ceil', value, exp);
+    };
+  }
+})();
+
 // Class定义
 class ViewPage {
   constructor(){
@@ -10,60 +59,105 @@ class ViewPage {
 class BaseElement {
   constructor(){
     this.id = store.cache.element_index++;
-    this.width = "100px";
-    this.height = "100px";
+    this.right = this.bottom = "auto";
+    
+    this._percentW = this._percentH = false;
 
-    this.align = "left top";
+    this.setOffset( 0, 0 );
+    this.setSize( 100, 100 );
   }
 
   get object(){
     let obj = {};
     for( let k in this ){
+      if( k[0] == "_" ) continue;
       obj[k] = this[k];
     }
     delete obj.id;
     return obj;
   }
 
-  setOffset( x, y ){
-    // now only "top left"
-    if( this.align == "left top" ){
-      this.left = x;
-      this.top = y;
-    }
+  setOffset( x, y ){ this.x = x; this.y = y; }
+  setSize( w, h ){ this.w = w; this.h = h; }
+  toggleW() { this._percentW = !this._percentW; this.w = this.w; }
+  toggleH() { this._percentH = !this._percentH; this.h = this.h; }
+
+  set x( v ) {
+    this.left = v+"px";
+    this._x = v;
   }
-  
-  set align( v ){
-    let arr = v.split(' ');
-    this.top = ( arr.indexOf('top') > 0 ) ? "0": "auto";
-    this.bottom = ( arr.indexOf('bottom') >0 ) ? "0": "auto";
-    this.left = ( arr.indexOf('left') > 0 ) ? "0": "auto";
-    this.right = ( arr.indexOf('right') >0 ) ? "0": "auto";
-    
-    this._alignStr = v;
+  get x(){ return this._x; }
+  set y( v ) {
+    this.top = v+"px";
+    this._y = v;
   }
-  get align(){ return this._alignStr; }
+  get y(){ return this._y; }
+
+  set w( v ) {
+    this.width = v + this.w_unit;
+    this._w = v;
+  }
+  get w(){ return this._w; }
+  get w_unit(){ return this._percentW?"%":"px"; }
+  set h( v ) {
+    this.height = v + this.h_unit;
+    this._h = v;
+  }
+  get h(){ return this._h; }
+  get h_unit(){ return this._percentH?"%":"px"; }
 }
 
 class DivElement extends BaseElement {
   get type(){ return 'div'; }
+  get typename(){ return '图层'; }
 
   constructor(){
     super();
-    this["background-color"] = "rgba(0,0,0,0.2)";
+    
+    this._r = this._g = this.b = 0;
+    this._a = 0.2;
+    this._refresh();
+
+    this.radius = 0;
+  }
+
+  set r( v ) { this._r = v; this._refresh(); }
+  get r(){ return this._r; }
+
+  set g( v ) { this._g = v; this._refresh(); }
+  get g(){ return this._g; }
+
+  set b( v ) { this._b = v; this._refresh(); }
+  get b(){ return this._b; }
+
+  set a( v ) { this._a = v; this._refresh(); }
+  get a(){ return this._a; }
+  
+  set radius( v ) { this._radius = v; this["border-radius"] = v+"px"; }
+  get radius(){ return this._radius; }
+
+  _refresh() {
+    this["background-color"] = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
   }
 }
 
-class TextElement extends BaseElement {
+class TextElement extends DivElement {
   get type(){ return 'text'; }
+  get typename(){ return '文本'; }
 
   constructor(){
     super();
+    this._r = this._g = this.b = 255;
+  }
+
+  _refresh() {
+    this['color'] = "rgb("+this.r+","+this.g+","+this.b+")";
   }
 }
 
 class ImageElement extends BaseElement {
   get type(){ return 'image'; }
+  get typename(){ return '图片'; }
   
   constructor(){
     super();
@@ -103,11 +197,6 @@ let previewVm = new Vue({
     });
     // Current Element
     if( !!store.cache.current_element_data ){
-      for( let i=0; i<4; i++ ){
-        children.push( createElement('element-archer', {
-          props: { index: i, target: store.cache.current_element_data }
-        }) );
-      }
       children.push( createElement('element-box', {
         props: { target: store.cache.current_element_data }
       }) );
@@ -124,7 +213,9 @@ let previewVm = new Vue({
           ev.preventDefault();
           let data = ev.dataTransfer.getData("text");
           let drag_data = data.split(":");
-          store.cache.current_element_data.setOffset( (ev.x-drag_data[0])+"px", (ev.y-drag_data[1])+"px" );
+          store.cache.current_element_data.setOffset(
+              Math.round10(ev.x-drag_data[0],1),
+              Math.round10(ev.y-drag_data[1],1) );
         },
         dragover: function( ev ){
           ev.preventDefault();
@@ -147,8 +238,8 @@ Vue.component('element-box',{
       bottom: target.bottom,
       left: target.left,
       right: target.right,
-      border: "2px dotted #f33",
-      cursor: "pointer"
+      border: "1px dotted #f33",
+      cursor: "move"
     };
 
     return createElement('div', {
@@ -158,8 +249,7 @@ Vue.component('element-box',{
       style: styleObj,
       on: {
         '!dragstart': function( ev ){
-          let info = ev.offsetX+":"+ev.offsetY; //(ev.x-ev.offsetX)+":"+(ev.y-ev.offsetY)+":"+
-          console.log( info );
+          let info = ev.offsetX+":"+ev.offsetY;
           ev.dataTransfer.effectAllowed = "move";
           ev.dataTransfer.setData('text', info );
         }
@@ -168,27 +258,16 @@ Vue.component('element-box',{
   }
 });
 
-Vue.component('element-archer',{
-  functional: true,
-  render: function (createElement, context){
-    let index = context.data.props.index;
-    let targetData = context.data.props.target;
-
-    return createElement('div', {
-
-    });
-  }
-});
-
 Vue.component('element-comp',{
   functional: true,
   render: function (createElement, context) {
-    let eleData = context.data.props;
-    let eleDefine = {};
     let eleChildren = [];
 
-    // 设置通用 Define
-    eleDefine.style = eleData.object;
+    let eleData = context.data.props;
+    let eleDefine = {
+      key: eleData.id,
+      style: eleData.object
+    };
 
     // 分类设置 Define
     switch( eleData.type ){
@@ -204,19 +283,6 @@ Vue.component('element-comp',{
     return createElement('div', eleDefine , eleChildren);
   }
 });
-
-/**
- * Editting 元素组件
- */
-Vue.component('element-editor-comp', {
-  template: "#element-editor-comp",
-  props: ["define","index","current"],
-  methods: {
-    setCurrent: function(){
-      this.$emit('current', Number(this.index) );
-    }
-  },
-})
 
 /**
  *  Main View
@@ -258,8 +324,7 @@ let vm = new Vue({
           store.cache.current_element_data = null;
         },
         currentElement: function (currEle) {
-          if( currEle != -1 )
-            store.cache.current_element_data = this.currentPageElements[currEle];
+          store.cache.current_element_data = ( currEle != -1 ) ? this.currentPageElements[currEle]: null;
         }
       },
       computed:{
@@ -285,7 +350,12 @@ let vm = new Vue({
             case 'div':
               newEl = new DivElement();
               break;
-          
+            case 'text':
+              newEl = new TextElement();
+              break;
+            case 'image':
+              newEl = new ImageElement();
+              break;
             default:
               return;
           }
@@ -293,6 +363,17 @@ let vm = new Vue({
 
           // set current 
           if( this.currentElement< 0 ) this.currentElement = 0;
+        },
+        removeElement: function( index ){
+          this.currentPageElements.splice(index, 1);
+
+          if( this.currentElement > 1 ){
+            let len = this.currentPageElements.length;
+            this.currentElement = ( this.currentElement - 1 + len) % len;
+          }
+          else{
+            this.currentElement = -1;
+          }
         },
       },
     },
@@ -306,3 +387,13 @@ let vm = new Vue({
   }
 
 });
+
+/**
+ * Editting 元素组件
+ */
+Vue.component('element-editor-comp', {
+  template: "#element-editor-comp",
+  props: ["define","index","current"],
+  methods: {
+  },
+})
