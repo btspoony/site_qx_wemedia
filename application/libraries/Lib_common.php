@@ -87,7 +87,7 @@ class Lib_common extends Library {
             205 => 'already receive',
             206 => 'has been brought up',
             207 => 'system error',
-            208 => 'empty sign',
+            208 => 'empty openid',
             209 => 'sign error',
         );
         return !empty($msg[$key]) ? $msg[$key] : 'error';

@@ -6,6 +6,11 @@
  */
 
 class Cdk extends TOP_Controller {
+    
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('cdk_model');
+    }
 
     /**
      * 获取优惠卷卷号
@@ -29,7 +34,6 @@ class Cdk extends TOP_Controller {
         if (!isset($data['type'])) {
             $this->lib_common->returnCdk(202);
         }
-        $this->load->model('cdk_type_model');
         $type_config = $this->cdk_type_model->_config();
         //不是有效的type类型
         $cdkType = $this->cdk_type_model->get_cdk_type($data['type']);

@@ -11,6 +11,7 @@
         <link href="<?= jscss_path('css/animate.min.css'); ?>" rel="stylesheet">
         
         <script type="text/javascript">
+            type = '<?=$type?>';
             site_url = '<?= get_url(); ?>';
             img_base_url = '<?= image_path(''); ?>';
         </script>
