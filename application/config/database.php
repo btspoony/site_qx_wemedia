@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '127.0.0.1',
-	'username' => 'root',
-	'password' => '',
+	'hostname' => '120.27.150.30',
+	'username' => 'gt_query',
+	'password' => 'gt@#query&Patch2016',
 	'database' => 'cdk',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => 'c_',
