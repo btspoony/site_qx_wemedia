@@ -12,7 +12,8 @@
                             <tr>
                                 <th>序号</th>
                                 <th>活动名称</th>
-                                <th>活动code<br /><已对外的url code不能修改><br/></th>
+                                <!--<th>活动code<br /><已对外的url code不能修改><br/></th>-->
+                                <th>活动type<br /><对应接口type><br/></th>
                                 <th>活动对应url<br/></th>
                                 <th>活动描述</th>
                                 <th>优惠卷总数</th>
@@ -28,7 +29,8 @@
                                 <tr class="gradeA odd">
                                     <td><?= ++$page['order_num']; ?></td>
                                     <td><?= $v['type_name']; ?></td>
-                                    <td><?= $v['type_code']; ?></td>
+                                    <!--<td><?= $v['type_code']; ?></td>-->
+                                    <td><?= $v['type_id']; ?></td>
                                     <td><?= $v['type_url']; ?></td>
                                     <td><?= $v['type_desc']; ?></td>
                                     <td><?= isset( $v['total']) ?  $v['total'] : 0; ?></td>

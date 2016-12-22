@@ -20,8 +20,7 @@ class Activity extends TOP_Controller{
      */
     function index() {
         $viewname = !empty($_GET['view']) ? $_GET['view'] : 'default';
-        die('ok');
-        $this->load->view('activity/'.$viewname);
+        $this->load->view('activity/index');
     }
     
     
