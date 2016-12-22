@@ -40,7 +40,7 @@ class Cdk extends DEFAULT_Controller {
     public function edit($type_id = null) {
         $data = $this->input->post();
         if (!empty($data)) {
-            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/activity/' . trim($data['type_code']) . '.html';
+            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/activity/index?view=' . trim($data['type_code']);
             $row = $this->cdk_type_model->modify_cdk($data, $type_id);
             $this->lib_common->redirect_modify('/admin/cdk/index', !empty($row));
         }
@@ -96,7 +96,7 @@ class Cdk extends DEFAULT_Controller {
             if (!empty($cdk_data)) {
                 $cdk_codes = array();
                 foreach ($cdk_data as $v) {
-                    if (!empty($v)) {
+                    if (!empty($v[0])) {
                         $cdk_codes[] = $v[0];
                     }
                 }
@@ -113,7 +113,7 @@ class Cdk extends DEFAULT_Controller {
     public function add() {
         $data = $this->input->post();
         if (!empty($data)) {
-            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/activity/' . trim($data['type_code']) . '.html';
+            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/activity/index?view=' . trim($data['type_code']);
             $type_id = $this->cdk_type_model->add_cdk_type($data);
             $this->lib_common->redirect_modify('/admin/cdk/index', !empty($type_id));
         }

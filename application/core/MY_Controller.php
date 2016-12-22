@@ -3,11 +3,10 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
+class TOP_Controller extends CI_Controller {
 
-class TOP_Controller extends CI_Controller{
-    
     public function __construct() {
-       
+
         parent::__construct();
         //指向mobile皮肤
         $this->load->home_themes_mobile_on();
@@ -16,16 +15,17 @@ class TOP_Controller extends CI_Controller{
     /**
      * 微信验证
      */
-    public function wx_wechat($query_string){
-        $this->load->library('lib_wechat');
-        $data = $this->lib_wechat->get_open_id(APPID,APPSECRET,$query_string);
-        p($data,1);
-        if (isset($data['openid'])) {
-            $this->session->set_userdata(array('openid' => $data['openid']));
+    public function wx_wechat($query_string) {
+        $openid = $this->session->userdata('openid');
+        if (empty($openid)) {
+            $this->load->library('lib_wechat');
+            $data = $this->lib_wechat->get_open_id(APPID, APPSECRET, $query_string);
+            if (isset($data['openid'])) {
+                $this->session->set_userdata(array('openid' => $data['openid']));
+            }
         }
     }
-    
-    
+
     public function json_error($message = '', $code = 1) {
         $ret_data = array(
             'code' => $code,
@@ -51,13 +51,13 @@ class TOP_Controller extends CI_Controller{
         }
         $this->json_error($msg, 1);
     }
+
 }
 
 class DEFAULT_Controller extends CI_Controller {
 
     public $admin_id = null;
     public $admin_info = null;
-    
     //用户登陆权限开放
     public $allow = array();
     public $controller_name = null;
@@ -81,7 +81,7 @@ class DEFAULT_Controller extends CI_Controller {
     public function action_auth() {
         $powers = $this->arrange_powers();
         $action_power = explode(',', $this->admin_info['powers']);
-        
+
         //查找当前控制器有没有做权限控制
         $actionid = 0;
         $nav = array();
@@ -100,7 +100,7 @@ class DEFAULT_Controller extends CI_Controller {
                 if (in_array($v1['actionid'], $action_power) || empty($this->admin_info['powers'])) {
                     if (!isset($nav[$v['name']])) {
                         $nav[$v['name']] = array(
-                            'name' => $v['name'],   
+                            'name' => $v['name'],
                             'description' => $v['description']
                         );
                     }
@@ -111,14 +111,14 @@ class DEFAULT_Controller extends CI_Controller {
 //        p($nav);
         //导航
         $this->load->vars(compact('powers', 'nav'));
-        
+
         //没有做权限控制 || 最大权限 || 有访问权限
-        if ($actionid == 0  || empty($this->admin_info['powers']) || in_array($actionid, $action_power)) {
+        if ($actionid == 0 || empty($this->admin_info['powers']) || in_array($actionid, $action_power)) {
             return;
         }
         redirect('/admin/power/authority');
     }
-    
+
     /**
      * 整理权限数据
      * @return type
@@ -137,7 +137,7 @@ class DEFAULT_Controller extends CI_Controller {
         }
         return $powers;
     }
-    
+
     /**
      * 登陆权限
      * @return type
@@ -194,7 +194,7 @@ class DEFAULT_Controller extends CI_Controller {
         }
         $this->json_error($msg, 1);
     }
-    
+
     public function err404() {
         redirect('/admin/power/err404');
     }

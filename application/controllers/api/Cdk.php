@@ -62,12 +62,15 @@ class Cdk extends TOP_Controller {
      */
     function getOpenid() {
         $openid = $this->session->userdata('openid');
-        if (empty($openid)) {
+        if (!empty($openid)) {
             $this->lib_common->returnCdk(200, array('openid' => $openid));
         }
         $this->lib_common->returnCdk(208);
     }
     
+    /**
+     * 判断礼包卷时候已经领取完
+     */
     function checkNoCdk() {
         $data = $this->input->post();
         //礼包卷已领完
