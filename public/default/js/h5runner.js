@@ -1,5 +1,20 @@
 var envOpt = envOpt || {};
 
+const resultKeyPair = {
+  'api/cdk/getcdkcode': 'cdk_code',
+  'api/cdk/getOpenid': 'openid',
+};
+
+const serverCode = {
+  208: "请刷新页面并在微信中打开",
+  202: "Type为空，请联系管理员",
+  203: "不是有效的Type类型，请联系管理员",
+  204: "该礼包已经关闭领取",
+  205: "活动已经领取过了",
+  206: "礼包卷已领完",
+  207: "领取失败，请联系管理员"
+};
+
 Vue.component('h5app',{
   // ============ 属性 =================
   data: function(){
@@ -8,10 +23,10 @@ Vue.component('h5app',{
       cleaner: false,
     };
   },
-  props: ['pages', 'autoplay'],
+  props: ['pages', 'editor_mode'],
   // ============ 生命周期 ==============
-  created:function(){
-    if( this.autoplay ){
+  mounted:function(){
+    if( this.editor_mode ){
       this.play();
     }
   },
@@ -26,21 +41,22 @@ Vue.component('h5app',{
     }
   },
   // ============ 渲染 =================
-  render: function (createElement) {
+  render: function (h) {
     if( this.cleaner ){
-      return createElement("div");
+      return h("div");
     }
     
     let pageData = this.pages[this.currentPage];
     let children = pageData.elements.map(
       function( elementData ){
-        return createElement("element-comp", {
+        return h("element-comp", {
           props: { 
             pageVar: pageData.vars,
-            eleData: elementData
+            eleData: elementData,
+            editor_mode: this.editor_mode
           }
         });
-    });
+    }, this);
 
     let dataDefine = {
       "class": {
@@ -52,18 +68,19 @@ Vue.component('h5app',{
       }
     };
 
-    return createElement("div", dataDefine, children );
+    return h("div", dataDefine, children );
   }
 });
 
 Vue.component('element-comp',{
   functional: true,
-  render: function (createElement, context) {
-    let eleChildren = [];
+  render: function (h, ctx) {
+    let pageVar = ctx.data.props.pageVar;
+    let eleData = ctx.data.props.eleData;
+    let editor_mode = ctx.data.props.editor_mode;
 
-    let pageVar = context.data.props.pageVar;
-    let eleData = context.data.props.eleData;
     let eleDefine = { key: eleData.id };
+    let eleChildren = [];
 
     let styleObj = {};
     for( let k in eleData.style ){
@@ -85,7 +102,7 @@ Vue.component('element-comp',{
     // define child
     if( eleData.type === "text" ){
       let text = eleData.data['useVar']? (pageVar[eleData.data['text']]||"(null)") :eleData.data['text'];
-      let inner = createElement( eleData.data['type'], {
+      let inner = h( eleData.data['type'], {
         "class": [ eleData.data['align'] ],
         domProps: { innerHTML: text },
       });
@@ -93,39 +110,28 @@ Vue.component('element-comp',{
     }
 
     // define event 
-    if( eleData.data['evt_enabled'] ){
+    if( eleData.data['evt_enabled'] && !editor_mode ){
       let func = function (ev){
-        $.post( eleData.data['evt_req_url'], envOpt, handleData( eleData.data['evt_save_var'], pageVar ) );
-      };
+        let api = eleData.data['evt_req_url'];
 
-      eleDefine.on = {
-        click: func
+        $.post( site_url + api, envOpt, handleData( resultKeyPair[api], eleData.data['evt_save_var'], pageVar ) );
       };
+      eleDefine.on = { click: func };
     }
 
-    return createElement('div', eleDefine , eleChildren);
+    return h('div', eleDefine , eleChildren);
   }
 });
 
-let serverCode = {
-  208: "请刷新页面并在微信中打开",
-  202: "Type为空，请联系管理员",
-  203: "不是有效的Type类型，请联系管理员",
-  204: "该礼包已经关闭领取",
-  205: "活动已经领取过了",
-  206: "礼包卷已领完",
-  207: "领取失败，请联系管理员"
-};
-
-function handleData( saveVarName, scope ){
+function handleData( resultKey, saveVarName, scope ){
   return function( resStr ){
     let res = JSON.parse(resStr);
     let result;
     if( !!serverCode[res.code] ){
       result = serverCode[res.code];
     }
-    else if(!!res.data){
-      result = res.data[saveVarName];
+    else if( res.code == 200 && !!res.data){
+      result = res.data[resultKey];
     }
     scope[saveVarName] = result;
   };

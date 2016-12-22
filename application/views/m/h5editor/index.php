@@ -117,22 +117,20 @@
         </div>
       </div>
       <template v-if="define.type=='div'||define.type=='text'">
-        <div class="col-sm-9">
-          <div class="input-group input-group-sm" style="width: 30%;">
+        <div class="col-sm-12">
+          <div class="input-group input-group-sm" style="width: 24%;">
             <span class="input-group-addon">R</span>
             <input type="text" class="form-control" v-model="define.r">
           </div>
-          <div class="input-group input-group-sm" style="width: 30%;">
+          <div class="input-group input-group-sm" style="width: 24%;">
             <span class="input-group-addon">G</span>
             <input type="text" class="form-control" v-model="define.g">
           </div>
-          <div class="input-group input-group-sm" style="width: 30%;">
+          <div class="input-group input-group-sm" style="width: 24%;">
             <span class="input-group-addon">B</span>
             <input type="text" class="form-control" v-model="define.b">
           </div>
-        </div>
-        <div class="col-sm-3" v-show="define.type=='div'">
-          <div class="input-group input-group-sm">
+          <div class="input-group input-group-sm" style="width: 24%;">
             <span class="input-group-addon">A</span>
             <input type="text" class="form-control" v-model="define.a">
           </div>
@@ -142,7 +140,10 @@
         <div class="col-sm-12">
           <div class="input-group input-group-sm" style="width: 70%;">
             <span class="input-group-addon" @click="define.toggleSrc()">{{define.src_name}}</span>
-            <input type="text" class="form-control" v-model="define.data.text">
+            <input v-if="define.src_name=='文本'" type="text" class="form-control" v-model="define.data.text">
+            <select v-else class="form-control input-sm" v-model="define.data.text">
+              <option v-for="n in 10" :value="'var'+(n-1)">页面变量{{ n-1 }}</option>
+            </select>
           </div>
           <div style="width: 13%;">
             <select class="form-control input-sm" v-model="define.data.type">
@@ -306,13 +307,9 @@
       <!-- end 动画模版 -->
       <!-- start 点击模版 -->
       <template v-if="define.evt_enabled">
-        <div class="col-sm-4">
+        <div class="col-sm-12">
           <div>
-            <label for="evtMode" class="control-label text-right" style="line-height:30px;">
-              <input type="checkbox" id="evtMode" v-model="define.evt_by_load">
-              <template v-if="define.evt_by_load">自动</template>
-              <template v-else>点击</template>
-            </label>
+            <label class="control-label text-right" style="line-height:30px;">点击</label>
           </div>
           <div>
             <select class="form-control input-sm" v-model="define.evt_req_url">
@@ -320,11 +317,13 @@
               <option value="api/cdk/getcdkcode">领码</option>
             </select>
           </div>
-        </div>
-        <div class="col-sm-8">
-          <div class="input-group input-group-sm">
-            <span class="input-group-addon">存入变量</span>
-            <input type="text" class="form-control" v-model="define.evt_save_var">
+          <div>
+            <label class="control-label text-right" style="line-height:30px;">存入变量</label>
+          </div>
+          <div>
+            <select class="form-control input-sm" v-model="define.evt_save_var">
+              <option v-for="n in 10" :value="'var'+(n-1)">页面变量{{ n-1 }}</option>
+            </select>
           </div>
         </div>
 
@@ -337,19 +336,17 @@
 <script type="text/x-template" id="tab-preview">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-12">
-        <h2>输出内容</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <p>{{result}}</p>
-      </div>
-    </div>
-    <div class="row">
       <div class="col-sm-6">
+        <h4>输出内容</h4>
+      </div>
+      <div class="col-sm-6 text-right">
         <button type="button" class="btn btn-success" @click="play">
         <span class="glyphicon glyphicon-play"></span> 播放</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <preview-code></preview-code>
       </div>
     </div>
   </div>
