@@ -1,5 +1,5 @@
 (function ($, window) {
-    
+
     function SuiJiNum() {
         return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     }
@@ -65,14 +65,14 @@
         var jsonData = {
             fileList: []
         };
-        
-        
+
+
         var webopt = {
             // swf文件路径
             swf: applicationPath + '/swf/Uploader.swf',
             // 文件接收服务端。
-            server: site_url+'/publics/uploadimg',
-            deleteServer: site_url+'/publics/delete_file',
+            server: site_url + '/publics/uploadimg',
+            deleteServer: site_url + '/publics/delete_file',
             // 选择文件的按钮。可选。
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
             pick: '#' + pickerid,
@@ -82,19 +82,22 @@
             fileSizeLimit: opts.fileSizeLimit,
             fileSingleSizeLimit: opts.fileSingleSizeLimit
         }
-        
-        
-        if (options.accept && options.accept == 'image'){
+
+
+        if (options.accept && options.accept == 'image') {
             webopt.accept = {
                 title: 'Images',
                 extensions: 'gif,jpg,jpeg,bmp,png',
                 mimeTypes: 'image/*'
             }
         }
+        if (options.src && options.src != '') {
+            $(".btns").append("<div class='" + options.imageClass + "'><img src='" + applicationPath + options.src + "' width='100px'/><div>");
+        }
 
         var webuploaderoptions = $.extend(webopt,
                 opts.innerOptions);
-                console.log();
+        console.log();
         var uploader = WebUploader.create(webuploaderoptions);
 
         //回发时还原hiddenfiled的保持数据
@@ -159,6 +162,12 @@
         uploader.on('uploadSuccess', function (file, response) {//上传成功事件
             input_name = $(item).attr('name');
             if (response.code == 0) {
+                if (options.accept && options.accept == 'image') {
+                    target.find('#' + $(item)[0].id + file.id).find('span.webuploadinfo').html("<img src='" + applicationPath + response.data.filepath + "' width='100px'/>");
+                    if (options.src && options.src != '') {
+                        $("." + options.imageClass).hide();
+                    }
+                }
                 target.find('#' + $(item)[0].id + file.id).find('span.webuploadstate').html('已上传');
                 $hiddenInput.append('<input type="text" name="' + input_name + '" id="hiddenInput' + $(item)[0].id + file.id + '" class="hiddenInput" value="' + response.data.filepath + '" />')
             } else {

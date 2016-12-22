@@ -10,18 +10,18 @@ class Publics extends DEFAULT_Controller {
         // 文件类型
         $ftype = !empty($_FILES['file']['type']) ? substr(strrchr($_FILES['file']['name'], "."), 1) : null;
 
-        $tmp_path = '/public/upload/' . $ftype . '/' . date('Ymd');
+        $tmp_path = 'upload/' . $ftype . '/' . date('Ymd');
 
-        if (!is_dir(FCPATH . $tmp_path)) {
-            @mkdir(FCPATH . $tmp_path, 0777, true);
+        if (!is_dir(FCPATH . "public/" . $tmp_path)) {
+            @mkdir(FCPATH . "public/" . $tmp_path, 0777, true);
         }
 
         $tmpfile = $tmp_path . '/' . time() . '.' . $ftype;
 
-        if (move_uploaded_file($_FILES['file']['tmp_name'], FCPATH . $tmpfile)) {
+        if (move_uploaded_file($_FILES['file']['tmp_name'], FCPATH . "public/" . $tmpfile)) {
             // 権限
             @chmod(FCPATH . $tmpfile, 0777);
-            $this->json_success(array('filepath'=>$tmpfile));
+            $this->json_success(array('filepath' => 'public/'.$tmpfile));
         }
         $this->json_error();
     }
