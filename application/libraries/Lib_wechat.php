@@ -14,7 +14,7 @@ class Lib_wechat extends Library {
     public function get_oauth_code($appid,$query_string = null) {
         if (!isset($_GET['code'])) {
             $self_url = 'http://' . $_SERVER['HTTP_HOST'] .'/main' . '?' . $_SERVER['QUERY_STRING'].$query_string;
-            die($self_url);
+//            die($self_url);
             $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . $appid . '&redirect_uri=' . urlencode($self_url) . '&response_type=code&scope=snsapi_base#wechat_redirect';
             Header('Location:' . $url);
             exit;
@@ -43,7 +43,7 @@ class Lib_wechat extends Library {
     public function get_open_id($appid, $appsecret,$query_string = null) {
 
         if (!isset($_GET['code'])) {
-            $this->get_oauth_code($appid);
+            $this->get_oauth_code($appid,$query_string);
         }
 
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' . $appid . '&secret=' . $appsecret . '&code=' . $_GET['code'] . '&grant_type=authorization_code';
