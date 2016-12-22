@@ -15,6 +15,6 @@ class Main extends TOP_Controller{
         $action = $_GET['action'];
         $view = $_GET['view'];
         $code = $_GET['code'];
-        redirect(base_url($controller.'/'.$action.'/'.$view.'?code='.$code));
+        redirect(base_url($controller.'/'.$action.'?view='.$view.'&code='.$code));
     }
 }
