@@ -11,9 +11,6 @@ class TOP_Controller extends CI_Controller{
         parent::__construct();
         //指向mobile皮肤
         $this->load->home_themes_mobile_on();
-        
-        //危险严重
-        $this->wx_wechat();
     }
 
     /**
