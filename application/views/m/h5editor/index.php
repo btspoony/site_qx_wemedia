@@ -1,27 +1,29 @@
 <?php load_view('elements/header'); ?>
 <link href="<?= jscss_path('default/css/app.css'); ?>" rel="stylesheet">
 <body>
-  
-<div id="preview"></div>
-<main id="app">
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" :class="{ active: isEditing }">
-      <a href="javascript:void(0);" @click="currentView='editing';">页面设计</a>
-    </li>
-    <li role="presentation" :class="{ active: isPreview }">
-      <a href="javascript:void(0);" @click="currentView='preview';">效果预览</a>
-    </li>
-  </ul>
-  <component v-bind:is="currentView">
-    <!-- 组件在 vm.currentview 变化时改变！ -->
-  </component>
+
+<main class="main">
+  <div id="preview"></div>
+  <div id="app">
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" :class="{ active: isEditing }">
+        <a href="javascript:void(0);" @click="currentView='editing';">页面设计</a>
+      </li>
+      <li role="presentation" :class="{ active: isPreview }">
+        <a href="javascript:void(0);" @click="currentView='preview';">效果预览</a>
+      </li>
+    </ul>
+    <component v-bind:is="currentView">
+      <!-- 组件在 vm.currentview 变化时改变！ -->
+    </component>
+  </div>
 </main>
 
  <!-- editing 的模版 -->
 <script type="text/x-template" id="tab-editing">
   <div class="container-fluid">
     <!--工具栏-->
-    <div class="row">
+    <div class="row editor-toolbar">
       <div class="col-xs-12 btn-group">
         <button type="button" class="btn btn-primary" @click="addElement('div')"><span class="glyphicon glyphicon-stop"></span></button>
         <button type="button" class="btn btn-primary" @click="addElement('text')"><span class="glyphicon glyphicon-font"></span></button>
@@ -122,6 +124,30 @@
           <div class="input-group input-group-sm">
             <span class="input-group-addon">A</span>
             <input type="text" class="form-control" v-model="define.a">
+          </div>
+        </div>
+      </template>
+      <template v-if="define.type=='text'">
+        <div class="col-xs-12">
+          <div class="input-group input-group-sm" style="width: 70%;">
+            <span class="input-group-addon">文本</span>
+            <input type="text" class="form-control" v-model="define.data.text">
+          </div>
+          <div style="width: 13%;">
+            <select class="form-control" v-model="define.data.type">
+              <option value="p">正文</option>
+              <option value="h1">标题</option>
+              <option value="h2">标题2</option>
+              <option value="h3">标题3</option>
+              <option value="h4">标题4</option>
+            </select>
+          </div>
+          <div style="width: 13%;">
+            <select class="form-control" v-model="define.data.align">
+              <option value="text-left">靠左</option>
+              <option value="text-center">居中</option>
+              <option value="text-right">靠右</option>
+            </select>
           </div>
         </div>
       </template>
