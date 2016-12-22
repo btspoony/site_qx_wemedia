@@ -26,6 +26,7 @@ html, body, .main{
   margin-left: 370px;
   padding: 5px;
   height: 100%;
+  max-width: 560px;
 }
 #app >.nav{
   position: absolute;
