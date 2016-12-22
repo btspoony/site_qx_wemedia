@@ -57,7 +57,7 @@
           <div class="container-fluid">
             <h4 v-if="isEmpty">无内容元素</h4>
             <element-editor-comp
-              v-for="(element, index) in currentPageElements"
+              v-for="(element, index) in currentPageData.elements"
               :key="element.id"
 
               :define="element"
@@ -140,7 +140,7 @@
       <template v-if="define.type=='text'">
         <div class="col-sm-12">
           <div class="input-group input-group-sm" style="width: 70%;">
-            <span class="input-group-addon">文本</span>
+            <span class="input-group-addon" @click="define.toggleSrc()">{{define.src_name}}</span>
             <input type="text" class="form-control" v-model="define.data.text">
           </div>
           <div style="width: 13%;">
