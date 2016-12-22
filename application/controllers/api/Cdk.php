@@ -9,7 +9,7 @@ class Cdk extends TOP_Controller {
     
     public function __construct() {
         parent::__construct();
-        $this->load->model('cdk_model');
+        $this->load->model(array('cdk_model','cdk_type_model'));
     }
 
     /**
@@ -17,6 +17,7 @@ class Cdk extends TOP_Controller {
      * ip
      */
     public function getcdkcode() {
+
         $data = $this->input->post();
 
         $this->load->library('lib_common');
