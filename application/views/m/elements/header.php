@@ -12,6 +12,7 @@
         
         <script type="text/javascript">
             site_url = '<?= get_url(); ?>';
+            img_base_url = '<?= image_path(''); ?>';
         </script>
         <!--[if lt IE 9]>
         <meta http-equiv="refresh" content="0;ie.html" />

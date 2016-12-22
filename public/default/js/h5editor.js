@@ -228,7 +228,7 @@ class ImageElement extends BaseElement {
   set url( v ){
     this._url = v;
     if( !!v ){
-      this.style['background-image'] = "url('"+v+"')";
+      this.style['background-image'] = "url('"+img_base_url+v+"')";
     }
   }
   get url(){  return this._url; }
