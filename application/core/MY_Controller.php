@@ -11,7 +11,20 @@ class TOP_Controller extends CI_Controller{
         parent::__construct();
         //指向mobile皮肤
         $this->load->home_themes_mobile_on();
+        
+        //危险严重
+        $this->wx_wechat();
     }
+
+    /**
+     * 微信验证
+     */
+    public function wx_wechat(){
+        $this->load->library('lib_wechat');
+        $data = $this->lib_wechat->get_open_id(APPID,APPSECRET);
+        p($data);
+    }
+    
     
     public function json_error($message = '', $code = 1) {
         $ret_data = array(

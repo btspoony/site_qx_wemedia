@@ -13,8 +13,8 @@ define('NO_DEL', 0);    //未删除
 define('YES_DEL', 1);   //已删除
 
 /*微信配置信息*/
-define('APPID', "wxdf6113a6b40bd3b0");    //未删除
-define('APPSECRET', "");   //已删除
+define('APPID', "wxdf6113a6b40bd3b0");    //apple
+define('APPSECRET', "04e6900d5486b1aef2ba5cbd0f4f884a");   //appsecret
 
 
 defined('BASEPATH') OR exit('No direct script access allowed');
