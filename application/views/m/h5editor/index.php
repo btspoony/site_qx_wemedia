@@ -55,7 +55,28 @@
         </div>
         <div class="panel-body">
           <div class="container-fluid">
-            <h4 v-if="isEmpty">无内容元素</h4>
+            <div class="row view-row">
+              <div class="col-sm-12" style="line-height:30px;">
+                <div>
+                  <label class="control-label text-right">加载</label>
+                </div>
+                <div>
+                  <select class="form-control input-sm">
+                    <option value="">无</option>
+                    
+                  </select>
+                </div>
+                <div>
+                  <label class="control-label text-right">存入变量</label>
+                </div>
+                <div>
+                  <select class="form-control input-sm">
+                    <option v-for="n in 10" :value="'var'+(n-1)">页面变量{{ n-1 }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
             <element-editor-comp
               v-for="(element, index) in currentPageData.elements"
               :key="element.id"
@@ -77,7 +98,7 @@
 
 <!-- Editing 元素模块 -->
 <script type="text/x-template" id="element-editor-comp">
-  <div class="row view-element-define"
+  <div class="row view-row view-element-define"
       :class="{ active: (index===current) }"
       @click="$emit('current', index );"
       @dragstart.capture="onStartDrag"

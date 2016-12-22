@@ -199,7 +199,7 @@ class BaseElement {
 
   set evt_enabled(v){ this.data['evt_enabled'] = !!v; }
   get evt_enabled(){ return this.data['evt_enabled']; }
-  
+
   set evt_be_hidden(v){ this.data['evt_be_hidden'] = !!v; }
   get evt_be_hidden(){ return this.data['evt_be_hidden']; }
   set evt_req_url(v){ this.data['evt_req_url'] = v; }
@@ -440,9 +440,6 @@ let vm = new Vue({
         pages: function(){ return store.pages; },
         currentPageData: function(){
           return store.pages[this.currentPage];
-        },
-        isEmpty: function(){
-          return this.currentPageData.elements.length == 0;
         }
       },
       methods: {

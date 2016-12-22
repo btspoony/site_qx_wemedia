@@ -85,14 +85,14 @@ html, body, .main{
 #app .view-element-define.active {
   background-color: #dfd;
 }
-#app .view-element-define >div{
+#app .view-row >div{
   margin-bottom: 5px;
 }
-#app .view-element-define >div>div{
+#app .view-row >div>div{
   float:left;
   margin-right:5px;
 }
-#app .view-element-define >div>div:last-child{
+#app .view-row >div>div:last-child{
   margin-right:0px;
 }
 

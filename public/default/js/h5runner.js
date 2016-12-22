@@ -1,8 +1,14 @@
 var envOpt = envOpt || {};
 
 const resultKeyPair = {
-  'api/cdk/getcdkcode': 'cdk_code',
-  'api/cdk/getOpenid': 'openid',
+  'api/cdk/getcdkcode': {
+    text: "领码",
+    key: "cdk_code"
+   },
+  'api/cdk/getOpenid': {
+    text: "查ID",
+    key: "openid"
+  },
 };
 
 const serverCode = {
@@ -122,7 +128,7 @@ Vue.component('element-comp',{
         }
 
         let api = eleData.data['evt_req_url'];
-        $.post( site_url + api, envOpt, handleData( resultKeyPair[api], eleData.data['evt_save_var'], pageVar ) );
+        $.post( site_url + api, envOpt, handleData( resultKeyPair[api].key, eleData.data['evt_save_var'], pageVar ) );
       };
       eleDefine.on = { "~click": func };
     }
