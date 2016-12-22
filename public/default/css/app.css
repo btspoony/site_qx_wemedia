@@ -1,3 +1,11 @@
+html, body, .main{
+  height: 100%;
+}
+
+.main {
+  position: relative;
+  padding: 10px;
+}
 /* =================== preview =================== */
 #preview {
   position: absolute;
@@ -17,16 +25,17 @@
 
   margin-left: 370px;
   padding: 5px;
+  height: 100%;
 }
 #app >.nav{
-  position: fixed;
+  position: absolute;
+  z-index: 100;
   width: 100%;
 }
 #app >div{
-  min-height: 600px;
+  height: 100%;
 
-  margin-top: 41px;
-  padding-top: 10px;
+  padding-top: 51px;
   border-left: 1px solid #ddd;
 }
 #app .row{
@@ -35,12 +44,19 @@
 #app .row:first-child{
   margin-top: 0px;
 }
+#app .editor-toolbar {
+  position: absolute;
+}
+#app .editor-view {
+  margin-top: 0px;
+  padding-top: 45px;
+  height: 100%;
+}
 #app .editor-view .view-toolbar{
   position: absolute;
-  min-height: 541px;
   width: 50px;
 
-  padding: 0;
+  padding: 0px 0px 5px;
   margin-left: 5px;
   text-align: center;
 
@@ -53,7 +69,10 @@
 #app .editor-view .view-content{
   position: relative;
 
-  margin-left: 60px;
+  margin: 0px 0px 0px 60px;
+  max-height: 100%;
+
+  overflow-y: scroll;
 }
 
 #app .view-element-define{

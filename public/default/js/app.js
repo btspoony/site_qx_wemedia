@@ -59,21 +59,29 @@ class ViewPage {
 class BaseElement {
   constructor(){
     this.id = store.cache.element_index++;
-    this.right = this.bottom = "auto";
+
+    this.style = {
+      right: "auto",
+      bottom: "auto",
+    };
+    this.data = {};
+    this.cls = {};
     
     this._percentW = this._percentH = false;
-
     this.setOffset( 0, 0 );
     this.setSize( 100, 100 );
+
+    this.animed = false;
+    this.anim_infinite = false;
+    this.anim_name = "bounce";
+    this.anim_delay = 0;
   }
 
-  get object(){
+  get cloneStyle(){
     let obj = {};
-    for( let k in this ){
-      if( k[0] == "_" ) continue;
-      obj[k] = this[k];
+    for( let k in this.style ){
+      obj[k] = this.style[k];
     }
-    delete obj.id;
     return obj;
   }
 
@@ -83,28 +91,42 @@ class BaseElement {
   toggleH() { this._percentH = !this._percentH; this.h = this.h; }
 
   set x( v ) {
-    this.left = v+"px";
+    this.style.left = v+"px";
     this._x = v;
   }
   get x(){ return this._x; }
   set y( v ) {
-    this.top = v+"px";
+    this.style.top = v+"px";
     this._y = v;
   }
   get y(){ return this._y; }
 
   set w( v ) {
-    this.width = v + this.w_unit;
+    this.style.width = v + this.w_unit;
     this._w = v;
   }
   get w(){ return this._w; }
   get w_unit(){ return this._percentW?"%":"px"; }
   set h( v ) {
-    this.height = v + this.h_unit;
+    this.style.height = v + this.h_unit;
     this._h = v;
   }
   get h(){ return this._h; }
   get h_unit(){ return this._percentH?"%":"px"; }
+
+  set animed(v){ this.cls['animated'] = !!v; }
+  get animed(){ return this.cls['animated']; }
+
+  set anim_infinite(v){ this.cls['infinite'] = !!v; }
+  get anim_infinite(){ return this.cls['infinite']; }
+
+  set anim_delay(v){
+    this._delay = Number(v);
+    this.style['animation-delay'] = this._delay+"s";
+    this.style['-moz-animation-delay'] = this._delay+"s";
+    this.style['-webkit-animation-delay'] = this._delay+"s";
+  }
+  get anim_delay(){ return this._delay; }
 }
 
 class DivElement extends BaseElement {
@@ -114,7 +136,7 @@ class DivElement extends BaseElement {
   constructor(){
     super();
     
-    this._r = this._g = this.b = 0;
+    this._r = this._g = this._b = 0;
     this._a = 0.2;
     this._refresh();
 
@@ -133,11 +155,11 @@ class DivElement extends BaseElement {
   set a( v ) { this._a = v; this._refresh(); }
   get a(){ return this._a; }
   
-  set radius( v ) { this._radius = v; this["border-radius"] = v+"px"; }
+  set radius( v ) { this._radius = v; this.style["border-radius"] = v+"px"; }
   get radius(){ return this._radius; }
 
   _refresh() {
-    this["background-color"] = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+    this.style["background-color"] = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
   }
 }
 
@@ -147,11 +169,18 @@ class TextElement extends DivElement {
 
   constructor(){
     super();
-    this._r = this._g = this.b = 255;
+
+    this.data.text = "TEXT";
+    this.data.type = "p";
+    this.data.align = "text-center";
+
+    this.a = 1;
+    this.toggleW();
+    this.h = 30;
   }
 
   _refresh() {
-    this['color'] = "rgb("+this.r+","+this.g+","+this.b+")";
+    this.style['color'] = "rgb("+this.r+","+this.g+","+this.b+")";
   }
 }
 
@@ -161,7 +190,20 @@ class ImageElement extends BaseElement {
   
   constructor(){
     super();
+    
+    this.style['background-repeat'] = "no-repeat";
+    this.style['background-position'] = "center";
+    this.style['background-size'] = "contain";
+    this.style['background-image'] = "";
   }
+
+  set url( v ){
+    this._url = v;
+    if( !!v ){
+      this.style['background-image'] = "url('"+v+"')";
+    }
+  }
+  get url(){  return this._url; }
 }
 
 // 公共Store
@@ -213,9 +255,10 @@ let previewVm = new Vue({
           ev.preventDefault();
           let data = ev.dataTransfer.getData("text");
           let drag_data = data.split(":");
+          let paddingOffset = 10;
           store.cache.current_element_data.setOffset(
-              Math.round10(ev.x-drag_data[0],1),
-              Math.round10(ev.y-drag_data[1],1) );
+              Math.round10(ev.x-drag_data[0]-paddingOffset,1),
+              Math.round10(ev.y-drag_data[1]-paddingOffset,1) );
         },
         dragover: function( ev ){
           ev.preventDefault();
@@ -232,15 +275,16 @@ Vue.component('element-box',{
   render: function (createElement, context){
     let target = context.data.props.target;
     let styleObj = {
-      width: target.width,
-      height: target.height,
-      top: target.top,
-      bottom: target.bottom,
-      left: target.left,
-      right: target.right,
+      width: target.style.width,
+      height: target.style.height,
+      top: target.style.top,
+      left: target.style.left,
+
       border: "1px dotted #f33",
-      cursor: "move"
-    };
+      cursor: "move",
+
+      "z-index": "999"
+    }
 
     return createElement('div', {
       attrs:{
@@ -266,19 +310,28 @@ Vue.component('element-comp',{
     let eleData = context.data.props;
     let eleDefine = {
       key: eleData.id,
-      style: eleData.object
+      style: eleData.cloneStyle
     };
 
-    // 分类设置 Define
-    switch( eleData.type ){
-      case "div":
-        break;
-      case "text":
-        break;
-      case "image":
-        break;
-      default:
-        return createElement('div');
+    // define class
+    eleDefine['class'] = {};
+    for( let k in eleData.cls ){
+      eleDefine['class'][k] = eleData.cls[k];
+    }
+    // set animation
+    if( eleData.animed ){
+      eleDefine['class'][eleData.anim_name] = true;
+    }
+
+    // define child
+    if( eleData.type === "text" ){
+      let inner = createElement( eleData.data.type, {
+        "class": [ eleData.data.align ],
+        domProps: {
+          innerHTML: eleData.data.text
+        },
+      });
+      eleChildren.push( inner );
     }
     return createElement('div', eleDefine , eleChildren);
   }
