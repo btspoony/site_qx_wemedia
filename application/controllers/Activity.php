@@ -11,7 +11,7 @@ class Activity extends TOP_Controller{
     function __construct() {
         parent::__construct();
         //危险严重
-        $this->wx_wechat('controller=activity&action=index');
+        $this->wx_wechat('&controller=activity&action=index');
     }
     
     /**
