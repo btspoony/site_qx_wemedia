@@ -41,11 +41,13 @@
         </li>
         <li>
           <button type="button" class="btn btn-xs btn-success"
-            @click="addPage"><span class="glyphicon glyphicon-plus"></span></button>
+            @click="addPage" disabled="disabled">
+            <span class="glyphicon glyphicon-plus"></span></button>
         </li>
       </ul>
       <div class="panel panel-default view-content">
-        <button type="button" class="btn btn-danger pull-right" style="margin-top: 3px; margin-right: 3px;">
+        <button type="button" class="btn btn-danger pull-right" style="margin-top: 3px; margin-right: 3px;"
+          disabled="disabled">
           <span class="glyphicon glyphicon-trash"></span>
         </button>
         <div class="panel-heading">
@@ -148,6 +150,14 @@
               <option value="text-center">居中</option>
               <option value="text-right">靠右</option>
             </select>
+          </div>
+        </div>
+      </template>
+      <template v-if="define.type=='image'">
+        <div class="col-xs-12">
+          <div class="input-group input-group-sm" style="width: 70%;">
+            <span class="input-group-addon">地址</span>
+            <input type="text" class="form-control" v-model="define.url">
           </div>
         </div>
       </template>

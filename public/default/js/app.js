@@ -151,7 +151,6 @@ class TextElement extends DivElement {
   constructor(){
     super();
 
-
     this.data.text = "TEXT";
     this.data.type = "p";
     this.data.align = "text-center";
@@ -172,7 +171,20 @@ class ImageElement extends BaseElement {
   
   constructor(){
     super();
+    
+    this.style['background-repeat'] = "no-repeat";
+    this.style['background-position'] = "center";
+    this.style['background-size'] = "contain";
+    this.style['background-image'] = "";
   }
+
+  set url( v ){
+    this._url = v;
+    if( !!v ){
+      this.style['background-image'] = "url('"+v+"')";
+    }
+  }
+  get url(){  return this._url; }
 }
 
 // 公共Store
@@ -224,9 +236,10 @@ let previewVm = new Vue({
           ev.preventDefault();
           let data = ev.dataTransfer.getData("text");
           let drag_data = data.split(":");
+          let paddingOffset = 10;
           store.cache.current_element_data.setOffset(
-              Math.round10(ev.x-drag_data[0],1),
-              Math.round10(ev.y-drag_data[1],1) );
+              Math.round10(ev.x-drag_data[0]-paddingOffset,1),
+              Math.round10(ev.y-drag_data[1]-paddingOffset,1) );
         },
         dragover: function( ev ){
           ev.preventDefault();
@@ -241,7 +254,13 @@ let previewVm = new Vue({
 Vue.component('element-box',{
   functional: true,
   render: function (createElement, context){
-    let styleObj = context.data.props.target.cloneStyle;
+    let target = context.data.props.target;
+    let styleObj = {
+      width: target.style.width,
+      height: target.style.height,
+      top: target.style.top,
+      left: target.style.left
+    }
     styleObj.border = "1px dotted #f33";
     styleObj.cursor = "move";
 
