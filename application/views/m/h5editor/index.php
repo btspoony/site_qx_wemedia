@@ -4,7 +4,7 @@
 
 <main class="main">
   <div id="preview"></div>
-  <div id="app">
+  <div id="app" @drop.prevent @dragover.prevent>
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" :class="{ active: isEditing }">
         <a href="javascript:void(0);" @click="currentView='editing';">页面设计</a>
@@ -65,6 +65,7 @@
               :current="currentElement"
 
               @current="currentElement=arguments[0];"
+              @move-element="moveElement(arguments[0], arguments[1]);"
               @remove-element="removeElement(arguments[0]);">
             </element-editor-comp>
           </div>
@@ -78,7 +79,10 @@
 <script type="text/x-template" id="element-editor-comp">
   <div class="row view-element-define"
       :class="{ active: (index===current) }"
-      @click="$emit('current', index );">
+      @click="$emit('current', index );"
+      @dragstart.capture="onStartDrag"
+      @drop.prevent="onDrop" @dragover.prevent
+      draggable=true >
       <div class="col-sm-3">
         <span class="text-primary">编号: </span><span class="badge">{{ index+1 }}</span>
       </div> 

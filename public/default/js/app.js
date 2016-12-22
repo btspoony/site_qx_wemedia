@@ -254,6 +254,10 @@ let previewVm = new Vue({
         drop: function( ev ){
           ev.preventDefault();
           let data = ev.dataTransfer.getData("text");
+          if ( data.indexOf("editor_")>=0 ) {
+            return;
+          }
+
           let drag_data = data.split(":");
           let paddingOffset = 10;
           store.cache.current_element_data.setOffset(
@@ -262,7 +266,6 @@ let previewVm = new Vue({
         },
         dragover: function( ev ){
           ev.preventDefault();
-          // Set the dropEffect to move
           ev.dataTransfer.dropEffect = "move";
         },
       },
@@ -428,6 +431,10 @@ let vm = new Vue({
             this.currentElement = -1;
           }
         },
+        moveElement: function( fromIndex, toIndex ){
+          let originELements = this.currentPageElements.splice( fromIndex, 1 );
+          this.currentPageElements.splice( toIndex, 0, originELements[0] );
+        }
       },
     },
     // 预览Tab组件
@@ -448,5 +455,19 @@ Vue.component('element-editor-comp', {
   template: "#element-editor-comp",
   props: ["define","index","current"],
   methods: {
+    onStartDrag: function( ev ){
+      ev.dataTransfer.effectAllowed = "move";
+      ev.dataTransfer.setData('text', "editor_"+this.index );
+    },
+    // Drag And Drop
+    onDrop: function( ev ){
+      let data = ev.dataTransfer.getData("text");
+      if ( data.indexOf("editor_") < 0 ) return;
+
+      let originIndex = Number(data.substring(7));
+      if( originIndex === this.index ) return;
+
+      this.$emit('move-element', originIndex, this.index );
+    },
   },
 })
