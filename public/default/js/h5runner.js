@@ -1,3 +1,4 @@
+var envOpt = envOpt || {};
 
 Vue.component('h5app',{
   // ============ 属性 =================
@@ -62,9 +63,7 @@ Vue.component('element-comp',{
 
     let pageVar = context.data.props.pageVar;
     let eleData = context.data.props.eleData;
-    let eleDefine = {
-      key: eleData.id
-    }
+    let eleDefine = { key: eleData.id };
 
     let styleObj = {};
     for( let k in eleData.style ){
@@ -79,19 +78,55 @@ Vue.component('element-comp',{
       eleDefine['class'][k] = eleData.cls[k];
     }
     // set animation
-    if( eleData.animed ){
-      eleDefine['class'][eleData.anim_name] = true;
+    if( eleData.cls['animated'] ){
+      eleDefine['class'][eleData.data['anim_name']] = true;
     }
 
     // define child
     if( eleData.type === "text" ){
-      let text = eleData.data.useVar? (pageVar[eleData.data.text]||"(null)") :eleData.data.text;
-      let inner = createElement( eleData.data.type, {
-        "class": [ eleData.data.align ],
+      let text = eleData.data['useVar']? (pageVar[eleData.data['text']]||"(null)") :eleData.data['text'];
+      let inner = createElement( eleData.data['type'], {
+        "class": [ eleData.data['align'] ],
         domProps: { innerHTML: text },
       });
       eleChildren.push( inner );
     }
+
+    // define event 
+    if( eleData.data['evt_enabled'] ){
+      let func = function (ev){
+        $.post( eleData.data['evt_req_url'], envOpt, handleData( eleData.data['evt_save_var'], pageVar ) );
+      };
+
+      eleDefine.on = {
+        click: func
+      };
+    }
+
     return createElement('div', eleDefine , eleChildren);
   }
 });
+
+let serverCode = {
+  208: "请刷新页面并在微信中打开",
+  202: "Type为空，请联系管理员",
+  203: "不是有效的Type类型，请联系管理员",
+  204: "该礼包已经关闭领取",
+  205: "活动已经领取过了",
+  206: "礼包卷已领完",
+  207: "领取失败，请联系管理员"
+};
+
+function handleData( saveVarName, scope ){
+  return function( resStr ){
+    let res = JSON.parse(resStr);
+    let result;
+    if( !!serverCode[res.code] ){
+      result = serverCode[res.code];
+    }
+    else if(!!res.data){
+      result = res.data[saveVarName];
+    }
+    scope[saveVarName] = result;
+  };
+}

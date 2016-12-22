@@ -157,6 +157,9 @@ class BaseElement {
   set anim_infinite(v){ this.cls['infinite'] = !!v; }
   get anim_infinite(){ return this.cls['infinite']; }
 
+  set anim_name(v){ this.data['anim_name'] = v; }
+  get anim_name(){ return this.data['anim_name']; }
+
   set anim_delay(v){
     this._delay = Number(v);
     this.style['animation-delay'] = this._delay+"s";
