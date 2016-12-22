@@ -35,12 +35,12 @@ class Cdk extends DEFAULT_Controller {
     }
 
     /**
-     * 编辑
+        * 编辑
      */
     public function edit($type_id = null) {
         $data = $this->input->post();
         if (!empty($data)) {
-            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/' . trim($data['type_code']) . '.html';
+            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/activity/' . trim($data['type_code']) . '.html';
             $row = $this->cdk_type_model->modify_cdk($data, $type_id);
             $this->lib_common->redirect_modify('/admin/cdk/index', !empty($row));
         }
@@ -96,7 +96,9 @@ class Cdk extends DEFAULT_Controller {
             if (!empty($cdk_data)) {
                 $cdk_codes = array();
                 foreach ($cdk_data as $v) {
-                    $cdk_codes[] = $v[0];
+                    if (!empty($v)) {
+                        $cdk_codes[] = $v[0];
+                    }
                 }
                 $ret_data = $this->cdk_model->add_cdk($cdk_codes, $type_id);
                 $this->lib_common->redirect_modify('/admin/cdk/see_code/' . $type_id, false, '数据导入成功:' . $ret_data['success'] . '; 卷号已存在:' . $ret_data['exist']);
@@ -111,7 +113,7 @@ class Cdk extends DEFAULT_Controller {
     public function add() {
         $data = $this->input->post();
         if (!empty($data)) {
-            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/' . trim($data['type_code']) . '.html';
+            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/activity/' . trim($data['type_code']) . '.html';
             $type_id = $this->cdk_type_model->add_cdk_type($data);
             $this->lib_common->redirect_modify('/admin/cdk/index', !empty($type_id));
         }
