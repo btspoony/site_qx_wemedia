@@ -307,9 +307,9 @@
       <!-- end 动画模版 -->
       <!-- start 点击模版 -->
       <template v-if="define.evt_enabled">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="line-height:30px;">
           <div>
-            <label class="control-label text-right" style="line-height:30px;">点击</label>
+            <label class="control-label text-right">点击</label>
           </div>
           <div>
             <select class="form-control input-sm" v-model="define.evt_req_url">
@@ -318,12 +318,15 @@
             </select>
           </div>
           <div>
-            <label class="control-label text-right" style="line-height:30px;">存入变量</label>
+            <label class="control-label text-right">存入变量</label>
           </div>
           <div>
             <select class="form-control input-sm" v-model="define.evt_save_var">
               <option v-for="n in 10" :value="'var'+(n-1)">页面变量{{ n-1 }}</option>
             </select>
+          </div>
+          <div>
+            <label><input type="checkbox" v-model="define.evt_be_hidden"> 并隐藏</label>
           </div>
         </div>
 

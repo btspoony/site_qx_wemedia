@@ -132,6 +132,7 @@ class BaseElement {
     this.anim_delay = 0;
 
     this.evt_enabled = false;
+    this.evt_be_hidden = false;
     this.evt_req_url = "";
     this.evt_save_var = "";
   }
@@ -198,6 +199,9 @@ class BaseElement {
 
   set evt_enabled(v){ this.data['evt_enabled'] = !!v; }
   get evt_enabled(){ return this.data['evt_enabled']; }
+  
+  set evt_be_hidden(v){ this.data['evt_be_hidden'] = !!v; }
+  get evt_be_hidden(){ return this.data['evt_be_hidden']; }
   set evt_req_url(v){ this.data['evt_req_url'] = v; }
   get evt_req_url(){ return this.data['evt_req_url']; }
   set evt_save_var(v){ this.data['evt_save_var'] = v; }

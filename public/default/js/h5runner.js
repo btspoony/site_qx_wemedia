@@ -79,7 +79,10 @@ Vue.component('element-comp',{
     let eleData = ctx.data.props.eleData;
     let editor_mode = ctx.data.props.editor_mode;
 
-    let eleDefine = { key: eleData.id };
+    let eleDefine = {
+      key: eleData.id,
+      ref: eleData.id
+    };
     let eleChildren = [];
 
     let styleObj = {};
@@ -90,7 +93,9 @@ Vue.component('element-comp',{
     eleDefine.style = styleObj;
 
     // define class
-    eleDefine['class'] = {};
+    eleDefine['class'] = {
+      hidden: false
+    };
     for( let k in eleData.cls ){
       eleDefine['class'][k] = eleData.cls[k];
     }
@@ -112,11 +117,14 @@ Vue.component('element-comp',{
     // define event 
     if( eleData.data['evt_enabled'] && !editor_mode ){
       let func = function (ev){
-        let api = eleData.data['evt_req_url'];
+        if( !!eleData.data['evt_be_hidden'] ){
+          ev.currentTarget.classList.add('hidden');
+        }
 
+        let api = eleData.data['evt_req_url'];
         $.post( site_url + api, envOpt, handleData( resultKeyPair[api], eleData.data['evt_save_var'], pageVar ) );
       };
-      eleDefine.on = { click: func };
+      eleDefine.on = { "~click": func };
     }
 
     return h('div', eleDefine , eleChildren);
