@@ -3,21 +3,41 @@ Vue.component('h5app',{
   // ============ 属性 =================
   data: function(){
     return {
-      currentPage: 0
+      currentPage: 0,
+      cleaner: false,
     };
   },
-  props: ['store'],
-  
+  props: ['pages', 'autoplay'],
+  // ============ 生命周期 ==============
+  created:function(){
+    if( this.autoplay ){
+      this.play();
+    }
+  },
+  // ============ 方法 =================
+  methods:{
+    play: function(){
+      this.cleaner = true;
+      let self = this;
+      setTimeout( function(){
+        self.cleaner = false;
+      },100);
+    }
+  },
   // ============ 渲染 =================
   render: function (createElement) {
-    let children = this.store.pages[this.currentPage].elements.map(
+    if( this.cleaner ){
+      return createElement("div");
+    }
+    
+    let children = this.pages[this.currentPage].elements.map(
       function( elementData ){
         return createElement("element-comp", {
           props: elementData
         });
     });
 
-    return createElement("div", {
+    let dataDefine = {
       "class": {
         h5player: true,
       },
@@ -25,7 +45,9 @@ Vue.component('h5app',{
         width: "100%",
         height: "100%"
       }
-    }, children );
+    };
+
+    return createElement("div", dataDefine, children );
   }
 });
 

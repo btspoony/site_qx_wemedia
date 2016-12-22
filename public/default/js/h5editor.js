@@ -53,15 +53,29 @@ class ViewPage {
   constructor(){
     this.elements = [];
   }
+
+  clone(){
+    return this.elements.map(function(ele){
+      return ele.clone();
+    });
+  }
 }
 
 // 公共Store
 let store = {
+  mode: "editor",
   cache: {
     element_index: 0,
     current_element_data: null,
   },
   pages: [ new ViewPage() ],
+
+  getPageJson: function(){
+    let obj = store.pages.map( function(page){
+      return page.clone();
+    });
+    return JSON.stringify( obj );
+  }
 };
 
 class BaseElement {
@@ -85,10 +99,16 @@ class BaseElement {
     this.anim_delay = 0;
   }
 
-  get cloneStyle(){
-    let obj = {};
-    for( let k in this.style ){
-      obj[k] = this.style[k];
+  clone(){
+    let obj = {
+      style: {},
+      cls: {},
+      data: {}
+    };
+    for( let j in obj ){
+      for( let k in this[j] ){
+        obj[j][k] = this[j][k];
+      }
     }
     return obj;
   }
@@ -220,8 +240,14 @@ class ImageElement extends BaseElement {
 let previewVm = new Vue({
   el: '#preview',
   // ============ 生命周期 ==============
-  // mounted:function(){
-  // },
+  mounted:function(){
+    this.$on("play", function(){
+      if( store.mode == "editor" ) return;
+      if( !this.$refs.h5app ) return;
+
+      this.$refs.h5app.play();
+    });
+  },
   // ============ 属性 =================
   data: {
     currentPage: 0,
@@ -229,29 +255,31 @@ let previewVm = new Vue({
   },
   // ============ 渲染 =================
   render: function (createElement) {
-    // Elements
-    let children = [
-      createElement('h5app',{
-        props: {
-          store: this.store
-        }
-      })
-    ];
-
-    // Current Element
-    if( !!store.cache.current_element_data ){
-      children.push( createElement('element-box', {
-        props: { target: store.cache.current_element_data }
-      }) );
-    }
-
-    // Render
-    return createElement('div',
-    {
+    let dataDefine = {
       attrs: {// 正常的 HTML 特性
         id: 'preview'
-      },
-      on: {
+      }
+    };
+    let h5app = createElement('h5app',{
+      ref: 'h5app',
+      props: {
+        pages: this.store.pages,
+        autoplay: (store.mode == "editor")
+      }
+    });
+    // Elements
+    let children = [ h5app ];
+
+    if( store.mode == "editor" ){
+      // Current Element
+      if( !!store.cache.current_element_data ){
+        children.push( createElement('element-box', {
+          props: { target: store.cache.current_element_data }
+        }) );
+      }
+
+      // event handler 
+      dataDefine["on"] ={
         drop: function( ev ){
           ev.preventDefault();
           let data = ev.dataTransfer.getData("text");
@@ -269,8 +297,11 @@ let previewVm = new Vue({
           ev.preventDefault();
           ev.dataTransfer.dropEffect = "move";
         },
-      },
-    }, children);
+      };
+    } // end editor
+
+    // Render
+    return createElement('div', dataDefine, children );
   }
 });
 
@@ -334,6 +365,7 @@ let vm = new Vue({
       template: '#tab-editing',
       mounted: function(){
         this.currentElement = this.isEmpty?-1:0;
+        store.mode = "editor";
       }, 
       data: function(){
         return {
@@ -406,9 +438,19 @@ let vm = new Vue({
     // 预览Tab组件
     preview: {
       template: '#tab-preview',
-      methods: {
-
+      mounted: function(){
+        store.mode = "player";
+      }, 
+      computed:{
+        result: function(){
+          return store.getPageJson();
+        }
       },
+      methods:{
+        play: function(){
+          previewVm.$emit("play");
+        }
+      }
     },
   }
 

@@ -307,8 +307,19 @@
 <script type="text/x-template" id="tab-preview">
   <div class="container-fluid">
     <div class="row">
+      <div class="col-sm-12">
+        <h2>输出内容</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <p>{{result}}</p>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-sm-6">
-        
+        <button type="button" class="btn btn-success" @click="play">
+        <span class="glyphicon glyphicon-play"></span> 播放</button>
       </div>
     </div>
   </div>
