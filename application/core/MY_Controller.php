@@ -22,7 +22,7 @@ class TOP_Controller extends CI_Controller{
     public function wx_wechat(){
         $this->load->library('lib_wechat');
         $data = $this->lib_wechat->get_open_id(APPID,APPSECRET);
-        p($data);
+        p($data,1);
     }
     
     
