@@ -49,12 +49,20 @@
   }
 })();
 
-// Class定义
 class ViewPage {
   constructor(){
     this.elements = [];
   }
 }
+
+// 公共Store
+let store = {
+  cache: {
+    element_index: 0,
+    current_element_data: null,
+  },
+  pages: [ new ViewPage() ],
+};
 
 class BaseElement {
   constructor(){
@@ -206,15 +214,6 @@ class ImageElement extends BaseElement {
   get url(){  return this._url; }
 }
 
-// 公共Store
-let store = {
-  cache: {
-    element_index: 0,
-    current_element_data: null,
-  },
-  pages: [ new ViewPage() ],
-};
-
 /**
  *  Preview View
  */
@@ -231,12 +230,14 @@ let previewVm = new Vue({
   // ============ 渲染 =================
   render: function (createElement) {
     // Elements
-    let children = store.pages[this.currentPage].elements.map(
-      function( elementData ){
-        return createElement("element-comp", {
-          props: elementData
-        });
-    });
+    let children = [
+      createElement('h5app',{
+        props: {
+          store: this.store
+        }
+      })
+    ];
+
     // Current Element
     if( !!store.cache.current_element_data ){
       children.push( createElement('element-box', {
@@ -302,41 +303,6 @@ Vue.component('element-box',{
         }
       },
     });
-  }
-});
-
-Vue.component('element-comp',{
-  functional: true,
-  render: function (createElement, context) {
-    let eleChildren = [];
-
-    let eleData = context.data.props;
-    let eleDefine = {
-      key: eleData.id,
-      style: eleData.cloneStyle
-    };
-
-    // define class
-    eleDefine['class'] = {};
-    for( let k in eleData.cls ){
-      eleDefine['class'][k] = eleData.cls[k];
-    }
-    // set animation
-    if( eleData.animed ){
-      eleDefine['class'][eleData.anim_name] = true;
-    }
-
-    // define child
-    if( eleData.type === "text" ){
-      let inner = createElement( eleData.data.type, {
-        "class": [ eleData.data.align ],
-        domProps: {
-          innerHTML: eleData.data.text
-        },
-      });
-      eleChildren.push( inner );
-    }
-    return createElement('div', eleDefine , eleChildren);
   }
 });
 

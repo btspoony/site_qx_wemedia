@@ -1,5 +1,5 @@
 <?php load_view('elements/header'); ?>
-<link href="<?= jscss_path('default/css/app.css'); ?>" rel="stylesheet">
+<link href="<?= jscss_path('default/css/h5editor.css'); ?>" rel="stylesheet">
 <body>
 
 <main class="main">
@@ -315,6 +315,7 @@
 </script>
 
 <script src="<?= jscss_path('js/vue/vue'.(ENVIRONMENT == 'production'?'.min':'').'.js?v=2.1.6'); ?>"></script>
-<script src="<?= jscss_path('default/js/app.js'); ?>"></script>
+<script src="<?= jscss_path('default/js/h5runner.js'); ?>"></script>
+<script src="<?= jscss_path('default/js/h5editor.js'); ?>"></script>
 
 <?php load_view('elements/footer'); ?>
