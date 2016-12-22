@@ -18,7 +18,6 @@
                 <div class="ibox-content text-center p-md">
                     <h2>
                         <span class="text-navy"><?php echo $msg; ?></span>
-                        提供两种主要布局和3套皮肤可供选择
                     </h2>
                     <h3>
                         系统将在 <span id="time">3</span> 秒钟后自动跳转至新网址，如果未能跳转，<a href="<?= $url;?>" title="点击访问">请点击</a>。
