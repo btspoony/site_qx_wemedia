@@ -30,10 +30,14 @@ Vue.component('h5app',{
       return createElement("div");
     }
     
-    let children = this.pages[this.currentPage].elements.map(
+    let pageData = this.pages[this.currentPage];
+    let children = pageData.elements.map(
       function( elementData ){
         return createElement("element-comp", {
-          props: elementData
+          props: { 
+            pageVar: pageData.vars,
+            eleData: elementData
+          }
         });
     });
 
@@ -56,7 +60,8 @@ Vue.component('element-comp',{
   render: function (createElement, context) {
     let eleChildren = [];
 
-    let eleData = context.data.props;
+    let pageVar = context.data.props.pageVar;
+    let eleData = context.data.props.eleData;
     let eleDefine = {
       key: eleData.id
     }
@@ -80,11 +85,10 @@ Vue.component('element-comp',{
 
     // define child
     if( eleData.type === "text" ){
+      let text = eleData.data.useVar? (pageVar[eleData.data.text]||"(null)") :eleData.data.text;
       let inner = createElement( eleData.data.type, {
         "class": [ eleData.data.align ],
-        domProps: {
-          innerHTML: eleData.data.text
-        },
+        domProps: { innerHTML: text },
       });
       eleChildren.push( inner );
     }

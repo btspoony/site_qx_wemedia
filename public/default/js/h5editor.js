@@ -52,6 +52,7 @@
 class ViewPage {
   constructor(){
     this.elements = [];
+    this.vars = {};
   }
 
   clone(){
@@ -79,8 +80,11 @@ let store = {
 };
 
 class BaseElement {
-  constructor(){
+  constructor(page){
     this.id = store.cache.element_index++;
+    Object.defineProperty(this, 'page', {
+      value: page,
+    });
 
     this.style = {
       right: "auto",
@@ -161,8 +165,8 @@ class DivElement extends BaseElement {
   get type(){ return 'div'; }
   get typename(){ return '图层'; }
 
-  constructor(){
-    super();
+  constructor(page){
+    super(page);
     
     this._r = this._g = this._b = 0;
     this._a = 0.2;
@@ -195,17 +199,21 @@ class TextElement extends DivElement {
   get type(){ return 'text'; }
   get typename(){ return '文本'; }
 
-  constructor(){
-    super();
+  constructor(page){
+    super(page);
 
     this.data.text = "TEXT";
     this.data.type = "p";
     this.data.align = "text-center";
+    this.data.useVar = false;
 
     this.a = 1;
     this.toggleW();
     this.h = 30;
   }
+
+  toggleSrc() { this.data.useVar = !this.data.useVar; }
+  get src_name(){ return this.data.useVar?"变量":"文本"; }
 
   _refresh() {
     this.style['color'] = "rgb("+this.r+","+this.g+","+this.b+")";
@@ -216,8 +224,8 @@ class ImageElement extends BaseElement {
   get type(){ return 'image'; }
   get typename(){ return '图片'; }
   
-  constructor(){
-    super();
+  constructor(page){
+    super(page);
     
     this.style['background-repeat'] = "no-repeat";
     this.style['background-position'] = "center";
@@ -378,19 +386,16 @@ let vm = new Vue({
           store.cache.current_element_data = null;
         },
         currentElement: function (currEle) {
-          store.cache.current_element_data = ( currEle != -1 ) ? this.currentPageElements[currEle]: null;
+          store.cache.current_element_data = ( currEle != -1 ) ? this.currentPageData.elements[currEle]: null;
         }
       },
       computed:{
         pages: function(){ return store.pages; },
-        currentPageElements: function(){
-          if( !store.pages[this.currentPage] ){
-            return [];
-          }
-          return store.pages[this.currentPage].elements;
+        currentPageData: function(){
+          return store.pages[this.currentPage];
         },
         isEmpty: function(){
-          return this.currentPageElements.length == 0;
+          return this.currentPageData.elements.length == 0;
         }
       },
       methods: {
@@ -413,16 +418,17 @@ let vm = new Vue({
             default:
               return;
           }
-          this.currentPageElements.push( newEl );
+          this.currentPageData.elements.push( newEl );
 
           // set current 
           if( this.currentElement< 0 ) this.currentElement = 0;
         },
         removeElement: function( index ){
-          this.currentPageElements.splice(index, 1);
+          let elements = this.currentPageData.elements;
+          elements.splice(index, 1);
 
           if( this.currentElement > 1 ){
-            let len = this.currentPageElements.length;
+            let len = elements.length;
             this.currentElement = ( this.currentElement - 1 + len) % len;
           }
           else{
@@ -430,8 +436,9 @@ let vm = new Vue({
           }
         },
         moveElement: function( fromIndex, toIndex ){
-          let originELements = this.currentPageElements.splice( fromIndex, 1 );
-          this.currentPageElements.splice( toIndex, 0, originELements[0] );
+          let elements = this.currentPageData.elements;
+          let originELements = elements.splice( fromIndex, 1 );
+          elements.splice( toIndex, 0, originELements[0] );
         }
       },
     },
