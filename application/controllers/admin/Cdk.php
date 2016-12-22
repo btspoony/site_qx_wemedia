@@ -35,12 +35,12 @@ class Cdk extends DEFAULT_Controller {
     }
 
     /**
-     * 编辑
+        * 编辑
      */
     public function edit($type_id = null) {
         $data = $this->input->post();
         if (!empty($data)) {
-            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/' . trim($data['type_code']) . '.html';
+            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/activity/' . trim($data['type_code']) . '.html';
             $row = $this->cdk_type_model->modify_cdk($data, $type_id);
             $this->lib_common->redirect_modify('/admin/cdk/index', !empty($row));
         }
@@ -111,7 +111,7 @@ class Cdk extends DEFAULT_Controller {
     public function add() {
         $data = $this->input->post();
         if (!empty($data)) {
-            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/' . trim($data['type_code']) . '.html';
+            $data['type_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/activity/' . trim($data['type_code']) . '.html';
             $type_id = $this->cdk_type_model->add_cdk_type($data);
             $this->lib_common->redirect_modify('/admin/cdk/index', !empty($type_id));
         }
