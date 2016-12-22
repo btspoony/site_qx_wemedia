@@ -10,18 +10,21 @@ class Activity extends TOP_Controller{
     
     function __construct() {
         parent::__construct();
-        
         //危险严重
-        $this->wx_wechat();
+        $this->wx_wechat('controller=activity&action=index&view='.!empty($_GET['view']) ? $_GET['view'] : 'default');
     }
     
     /**
      * 首页
      * @param type $viewname
      */
-    function index($viewname = null) {
+    function index() {
+        $viewname = !empty($_GET['view']) ? $_GET['view'] : 'default';
+        die('ok');
         $this->load->view('activity/'.$viewname);
     }
+    
+    
     
     
 }

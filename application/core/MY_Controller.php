@@ -16,10 +16,12 @@ class TOP_Controller extends CI_Controller{
     /**
      * 微信验证
      */
-    public function wx_wechat(){
+    public function wx_wechat($query_string){
         $this->load->library('lib_wechat');
-        $data = $this->lib_wechat->get_open_id(APPID,APPSECRET);
-        p($data,1);
+        $data = $this->lib_wechat->get_open_id(APPID,APPSECRET,$query_string);
+        if (isset($data['openid'])) {
+            $this->session->set_session(array('openid' => $data['openid']));
+        }
     }
     
     
