@@ -24,7 +24,7 @@
   <div class="container-fluid">
     <!--工具栏-->
     <div class="row editor-toolbar">
-      <div class="col-xs-12 btn-group">
+      <div class="col-sm-12 btn-group">
         <button type="button" class="btn btn-primary" @click="addElement('div')"><span class="glyphicon glyphicon-stop"></span></button>
         <button type="button" class="btn btn-primary" @click="addElement('text')"><span class="glyphicon glyphicon-font"></span></button>
         <button type="button" class="btn btn-primary" @click="addElement('image')"><span class="glyphicon glyphicon-picture"></span></button>
@@ -79,19 +79,23 @@
   <div class="row view-element-define"
       :class="{ active: (index===current) }"
       @click="$emit('current', index );">
-      <div class="col-xs-3">
+      <div class="col-sm-3">
         <span class="text-primary">编号: </span><span class="badge">{{ index+1 }}</span>
       </div> 
-      <div class="col-xs-7">
+      <div class="col-sm-3">
         <span class="text-primary">类型: </span><span class="text-muted">{{ define.typename }}</span>
       </div> 
-      <div class="col-xs-2 text-right">
+      <div class="col-sm-4">
+        <label><input type="checkbox" v-model="define.animed"> 动画</label>
+        <label v-show="define.animed"><input type="checkbox" v-model="define.anim_infinite"> 循环</label>
+      </div> 
+      <div class="col-sm-2 text-right">
         <button type="button" class="btn btn-xs btn-danger"
           @click="$emit('remove-element', index );">
           <span class="glyphicon glyphicon-minus"></span>
         </button>
       </div>
-      <div class="col-xs-12">
+      <div class="col-sm-12">
         <div class="input-group input-group-sm" style="width: 34%;">
           <span class="input-group-addon">宽</span>
           <input type="text" class="form-control" v-model="define.w">
@@ -108,7 +112,7 @@
         </div>
       </div>
       <template v-if="define.type=='div'||define.type=='text'">
-        <div class="col-xs-9">
+        <div class="col-sm-9">
           <div class="input-group input-group-sm" style="width: 30%;">
             <span class="input-group-addon">R</span>
             <input type="text" class="form-control" v-model="define.r">
@@ -122,7 +126,7 @@
             <input type="text" class="form-control" v-model="define.b">
           </div>
         </div>
-        <div class="col-xs-3" v-show="define.type=='div'">
+        <div class="col-sm-3" v-show="define.type=='div'">
           <div class="input-group input-group-sm">
             <span class="input-group-addon">A</span>
             <input type="text" class="form-control" v-model="define.a">
@@ -130,13 +134,13 @@
         </div>
       </template>
       <template v-if="define.type=='text'">
-        <div class="col-xs-12">
+        <div class="col-sm-12">
           <div class="input-group input-group-sm" style="width: 70%;">
             <span class="input-group-addon">文本</span>
             <input type="text" class="form-control" v-model="define.data.text">
           </div>
           <div style="width: 13%;">
-            <select class="form-control" v-model="define.data.type">
+            <select class="form-control input-sm" v-model="define.data.type">
               <option value="p">正文</option>
               <option value="h1">标题</option>
               <option value="h2">标题2</option>
@@ -145,7 +149,7 @@
             </select>
           </div>
           <div style="width: 13%;">
-            <select class="form-control" v-model="define.data.align">
+            <select class="form-control input-sm" v-model="define.data.align">
               <option value="text-left">靠左</option>
               <option value="text-center">居中</option>
               <option value="text-right">靠右</option>
@@ -154,13 +158,144 @@
         </div>
       </template>
       <template v-if="define.type=='image'">
-        <div class="col-xs-12">
+        <div class="col-sm-12">
           <div class="input-group input-group-sm" style="width: 70%;">
             <span class="input-group-addon">地址</span>
             <input type="text" class="form-control" v-model="define.url">
           </div>
         </div>
       </template>
+      <template v-if="define.animed">
+        <label for="animatePick" class="col-sm-2 control-label text-center" style="line-height:30px;">类型</label>
+        <div class="col-sm-4">
+          <select class="form-control input-sm" id="animatePick" v-model="define.anim_name">
+            <optgroup label="增强关注">
+              <option value="bounce">bounce</option>
+              <option value="flash">flash</option>
+              <option value="pulse">pulse</option>
+              <option value="rubberBand">rubberBand</option>
+              <option value="shake">shake</option>
+              <option value="swing">swing</option>
+              <option value="tada">tada</option>
+              <option value="wobble">wobble</option>
+            </optgroup>
+
+            <optgroup label="缓动进场">
+              <option value="bounceIn">bounceIn</option>
+              <option value="bounceInDown">bounceInDown</option>
+              <option value="bounceInLeft">bounceInLeft</option>
+              <option value="bounceInRight">bounceInRight</option>
+              <option value="bounceInUp">bounceInUp</option>
+            </optgroup>
+
+            <optgroup label="缓动出场">
+              <option value="bounceOut">bounceOut</option>
+              <option value="bounceOutDown">bounceOutDown</option>
+              <option value="bounceOutLeft">bounceOutLeft</option>
+              <option value="bounceOutRight">bounceOutRight</option>
+              <option value="bounceOutUp">bounceOutUp</option>
+            </optgroup>
+
+            <optgroup label="渐变进场">
+              <option value="fadeIn">fadeIn</option>
+              <option value="fadeInDown">fadeInDown</option>
+              <option value="fadeInDownBig">fadeInDownBig</option>
+              <option value="fadeInLeft">fadeInLeft</option>
+              <option value="fadeInLeftBig">fadeInLeftBig</option>
+              <option value="fadeInRight">fadeInRight</option>
+              <option value="fadeInRightBig">fadeInRightBig</option>
+              <option value="fadeInUp">fadeInUp</option>
+              <option value="fadeInUpBig">fadeInUpBig</option>
+            </optgroup>
+
+            <optgroup label="渐变出场">
+              <option value="fadeOut">fadeOut</option>
+              <option value="fadeOutDown">fadeOutDown</option>
+              <option value="fadeOutDownBig">fadeOutDownBig</option>
+              <option value="fadeOutLeft">fadeOutLeft</option>
+              <option value="fadeOutLeftBig">fadeOutLeftBig</option>
+              <option value="fadeOutRight">fadeOutRight</option>
+              <option value="fadeOutRightBig">fadeOutRightBig</option>
+              <option value="fadeOutUp">fadeOutUp</option>
+              <option value="fadeOutUpBig">fadeOutUpBig</option>
+            </optgroup>
+
+            <optgroup label="翻转动画">
+              <option value="flip">flip</option>
+              <option value="flipInX">flipInX</option>
+              <option value="flipInY">flipInY</option>
+              <option value="flipOutX">flipOutX</option>
+              <option value="flipOutY">flipOutY</option>
+            </optgroup>
+
+            <optgroup label="光速移动">
+              <option value="lightSpeedIn">lightSpeedIn</option>
+              <option value="lightSpeedOut">lightSpeedOut</option>
+            </optgroup>
+
+            <optgroup label="旋转进场">
+              <option value="rotateIn">rotateIn</option>
+              <option value="rotateInDownLeft">rotateInDownLeft</option>
+              <option value="rotateInDownRight">rotateInDownRight</option>
+              <option value="rotateInUpLeft">rotateInUpLeft</option>
+              <option value="rotateInUpRight">rotateInUpRight</option>
+            </optgroup>
+
+            <optgroup label="旋转出场">
+              <option value="rotateOut">rotateOut</option>
+              <option value="rotateOutDownLeft">rotateOutDownLeft</option>
+              <option value="rotateOutDownRight">rotateOutDownRight</option>
+              <option value="rotateOutUpLeft">rotateOutUpLeft</option>
+              <option value="rotateOutUpRight">rotateOutUpRight</option>
+            </optgroup>
+
+            <optgroup label="切入进场">
+              <option value="slideInUp">slideInUp</option>
+              <option value="slideInDown">slideInDown</option>
+              <option value="slideInLeft">slideInLeft</option>
+              <option value="slideInRight">slideInRight</option>
+
+            </optgroup>
+            <optgroup label="切出出场">
+              <option value="slideOutUp">slideOutUp</option>
+              <option value="slideOutDown">slideOutDown</option>
+              <option value="slideOutLeft">slideOutLeft</option>
+              <option value="slideOutRight">slideOutRight</option>
+              
+            </optgroup>
+            
+            <optgroup label="缩放进场">
+              <option value="zoomIn">zoomIn</option>
+              <option value="zoomInDown">zoomInDown</option>
+              <option value="zoomInLeft">zoomInLeft</option>
+              <option value="zoomInRight">zoomInRight</option>
+              <option value="zoomInUp">zoomInUp</option>
+            </optgroup>
+            
+            <optgroup label="缩放出场">
+              <option value="zoomOut">zoomOut</option>
+              <option value="zoomOutDown">zoomOutDown</option>
+              <option value="zoomOutLeft">zoomOutLeft</option>
+              <option value="zoomOutRight">zoomOutRight</option>
+              <option value="zoomOutUp">zoomOutUp</option>
+            </optgroup>
+
+            <optgroup label="特殊动画">
+              <option value="hinge">hinge</option>
+              <option value="rollIn">rollIn</option>
+              <option value="rollOut">rollOut</option>
+            </optgroup>
+          </select>
+        </div>
+        <label for="animateDelay" class="col-sm-2 control-label text-center" style="line-height:30px;">延迟</label>
+        <div class="col-sm-4">
+          <div class="input-group input-group-sm">
+            <input type="text" id="animateDelay" class="form-control" v-model="define.anim_delay">
+            <span class="input-group-addon">秒</span>
+          </div>
+        </div>
+      </template>
+      <!-- 动画模版 -->
   </div>
 </script>
 
@@ -168,7 +303,7 @@
 <script type="text/x-template" id="tab-preview">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-sm-6">
         
       </div>
     </div>

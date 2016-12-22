@@ -70,6 +70,11 @@ class BaseElement {
     this._percentW = this._percentH = false;
     this.setOffset( 0, 0 );
     this.setSize( 100, 100 );
+
+    this.animed = false;
+    this.anim_infinite = false;
+    this.anim_name = "bounce";
+    this.anim_delay = 0;
   }
 
   get cloneStyle(){
@@ -108,6 +113,20 @@ class BaseElement {
   }
   get h(){ return this._h; }
   get h_unit(){ return this._percentH?"%":"px"; }
+
+  set animed(v){ this.cls['animated'] = !!v; }
+  get animed(){ return this.cls['animated']; }
+
+  set anim_infinite(v){ this.cls['infinite'] = !!v; }
+  get anim_infinite(){ return this.cls['infinite']; }
+
+  set anim_delay(v){
+    this._delay = Number(v);
+    this.style['animation-delay'] = this._delay+"s";
+    this.style['-moz-animation-delay'] = this._delay+"s";
+    this.style['-webkit-animation-delay'] = this._delay+"s";
+  }
+  get anim_delay(){ return this._delay; }
 }
 
 class DivElement extends BaseElement {
@@ -259,10 +278,13 @@ Vue.component('element-box',{
       width: target.style.width,
       height: target.style.height,
       top: target.style.top,
-      left: target.style.left
+      left: target.style.left,
+
+      border: "1px dotted #f33",
+      cursor: "move",
+
+      "z-index": "999"
     }
-    styleObj.border = "1px dotted #f33";
-    styleObj.cursor = "move";
 
     return createElement('div', {
       attrs:{
@@ -291,23 +313,25 @@ Vue.component('element-comp',{
       style: eleData.cloneStyle
     };
 
-    // 分类设置 Define
-    switch( eleData.type ){
-      case "div":
-        break;
-      case "text":
-        let inner = createElement( eleData.data.type, {
-          "class": [ eleData.data.align ],
-          domProps: {
-            innerHTML: eleData.data.text
-          },
-        });
-        eleChildren.push( inner );
-        break;
-      case "image":
-        break;
-      default:
-        return createElement('div');
+    // define class
+    eleDefine['class'] = {};
+    for( let k in eleData.cls ){
+      eleDefine['class'][k] = eleData.cls[k];
+    }
+    // set animation
+    if( eleData.animed ){
+      eleDefine['class'][eleData.anim_name] = true;
+    }
+
+    // define child
+    if( eleData.type === "text" ){
+      let inner = createElement( eleData.data.type, {
+        "class": [ eleData.data.align ],
+        domProps: {
+          innerHTML: eleData.data.text
+        },
+      });
+      eleChildren.push( inner );
     }
     return createElement('div', eleDefine , eleChildren);
   }
