@@ -16,11 +16,13 @@ class Cdk extends TOP_Controller {
 
         $this->load->library('lib_common');
         //ip为空
-        if (!isset($data['ip'])) {
-            $this->lib_common->returnCdk(201);
-        }
+//        if (!isset($data['ip'])) {
+//            $this->lib_common->returnCdk(201);
+//        }
+        $openid = $this->session->userdata('openid');
+        $data['openid'] = $openid;
         //openid为空
-        if (!isset($data['openid'])) {
+        if (empty($data['openid'])) {
             $this->lib_common->returnCdk(208);
         }
         //type 为空
@@ -40,7 +42,7 @@ class Cdk extends TOP_Controller {
         }
         $this->load->model('cdk_model');
         //活动已经领取过了
-        $cdk = $this->cdk_model->get_cdk_by_openid($data['ip'], $data['type']);
+        $cdk = $this->cdk_model->get_cdk_by_openid($data['openid'], $data['type']);
         if (!empty($cdk)) {
             $this->lib_common->returnCdk(205);
         }
@@ -50,7 +52,7 @@ class Cdk extends TOP_Controller {
             $this->lib_common->returnCdk(206);
         }
         //修改领取状态, 领取卷码
-        $row = $this->cdk_model->modify_cdk($data['ip'], $cdk_data['cdk_id']);
+        $row = $this->cdk_model->modify_cdk($data['openid'], $cdk_data['cdk_id']);
         if (empty($row)) {
             $this->lib_common->returnCdk(207);
         }

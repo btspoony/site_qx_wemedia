@@ -20,7 +20,10 @@ class Activity extends TOP_Controller{
      */
     function index() {
         $viewname = !empty($_GET['view']) ? $_GET['view'] : 'default';
-        $this->load->view('activity/index');
+        $this->load->load('cdk_type_model');
+        $data = $this->cdk_type_model->get_result_by_type_code($viewname);
+        $type = !empty($data) ? $data['type_id'] : null;
+        $this->load->view('activity/index', compact('type'));
     }
     
     

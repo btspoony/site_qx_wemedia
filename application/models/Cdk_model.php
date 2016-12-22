@@ -122,9 +122,9 @@ class Cdk_model extends MY_Model {
      * 修改
      * @param type $data
      */
-    function modify_cdk($ip = null, $cdk_id = null, $openid = null) {
+    function modify_cdk($openid = null, $cdk_id = null ) {
         $params = array(
-            'cdk_receive_ip' => $ip,
+            'cdk_receive_ip' => real_ip(),
             'openid' => $openid,
             'cdk_receive_time' => date('Y-m-d H:i:s'),
             'cdk_status' => self::STATUS_USE_YES,
