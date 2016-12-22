@@ -96,7 +96,9 @@ class Cdk extends DEFAULT_Controller {
             if (!empty($cdk_data)) {
                 $cdk_codes = array();
                 foreach ($cdk_data as $v) {
-                    $cdk_codes[] = $v[0];
+                    if (!empty($v)) {
+                        $cdk_codes[] = $v[0];
+                    }
                 }
                 $ret_data = $this->cdk_model->add_cdk($cdk_codes, $type_id);
                 $this->lib_common->redirect_modify('/admin/cdk/see_code/' . $type_id, false, '数据导入成功:' . $ret_data['success'] . '; 卷号已存在:' . $ret_data['exist']);
