@@ -101,6 +101,11 @@ class BaseElement {
     this.anim_infinite = false;
     this.anim_name = "bounce";
     this.anim_delay = 0;
+
+    this.evt_enabled = false;
+    this.evt_by_load = false;
+    this.evt_req_url = "";
+    this.evt_save_var = "";
   }
 
   clone(){
@@ -159,6 +164,15 @@ class BaseElement {
     this.style['-webkit-animation-delay'] = this._delay+"s";
   }
   get anim_delay(){ return this._delay; }
+
+  set evt_enabled(v){ this.data['evt_enabled'] = !!v; }
+  get evt_enabled(){ return this.data['evt_enabled']; }
+  set evt_by_load(v){ this.data['evt_by_load'] = !!v; }
+  get evt_by_load(){ return this.data['evt_by_load']; }
+  set evt_req_url(v){ this.data['evt_req_url'] = v; }
+  get evt_req_url(){ return this.data['evt_req_url']; }
+  set evt_save_var(v){ this.data['evt_save_var'] = v; }
+  get evt_save_var(){ return this.data['evt_save_var']; }
 }
 
 class DivElement extends BaseElement {
