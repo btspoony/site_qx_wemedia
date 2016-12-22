@@ -83,15 +83,16 @@
       @dragstart.capture="onStartDrag"
       @drop.prevent="onDrop" @dragover.prevent
       draggable=true >
-      <div class="col-sm-3">
-        <span class="text-primary">编号: </span><span class="badge">{{ index+1 }}</span>
+      <div class="col-sm-1">
+        <span class="badge">{{ index+1 }}</span>
       </div> 
       <div class="col-sm-3">
         <span class="text-primary">类型: </span><span class="text-muted">{{ define.typename }}</span>
       </div> 
-      <div class="col-sm-4">
+      <div class="col-sm-6">
         <label><input type="checkbox" v-model="define.animed"> 动画</label>
         <label v-show="define.animed"><input type="checkbox" v-model="define.anim_infinite"> 循环</label>
+        <label><input type="checkbox" v-model="define.evt_enabled"> 事件</label>
       </div> 
       <div class="col-sm-2 text-right">
         <button type="button" class="btn btn-xs btn-danger"
@@ -161,6 +162,7 @@
           </div>
         </div>
       </template>
+      <!-- start 图片模版 -->
       <template v-if="define.type=='image'">
         <div class="col-sm-12">
           <div class="input-group input-group-sm" style="width: 70%;">
@@ -169,6 +171,8 @@
           </div>
         </div>
       </template>
+      <!-- end 图片模版 -->
+      <!-- start 动画模版 -->
       <template v-if="define.animed">
         <label for="animatePick" class="col-sm-2 control-label text-center" style="line-height:30px;">类型</label>
         <div class="col-sm-4">
@@ -299,7 +303,33 @@
           </div>
         </div>
       </template>
-      <!-- 动画模版 -->
+      <!-- end 动画模版 -->
+      <!-- start 点击模版 -->
+      <template v-if="define.evt_enabled">
+        <div class="col-sm-4">
+          <div>
+            <label for="evtMode" class="control-label text-right" style="line-height:30px;">
+              <input type="checkbox" id="evtMode" v-model="define.evt_by_load">
+              <template v-if="define.evt_by_load">自动</template>
+              <template v-else>点击</template>
+            </label>
+          </div>
+          <div>
+            <select class="form-control input-sm" v-model="define.evt_req_url">
+              <option value="">无</option>
+              <option value="api/cdk/getcdkcode">领码</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon">存入变量</span>
+            <input type="text" class="form-control" v-model="define.evt_save_var">
+          </div>
+        </div>
+
+      </template>
+      <!-- end 点击模版 -->
   </div>
 </script>
 
