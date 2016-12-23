@@ -23,7 +23,8 @@ class Activity extends TOP_Controller{
         $this->load->model('cdk_type_model');
         $data = $this->cdk_type_model->get_result_by_type_code($viewname);
         $type = !empty($data) ? $data['type_id'] : null;
-        $this->load->view('activity/index', compact('type'));
+        $page_data = !empty($data) ? $data['type_page'] : null;
+        $this->load->view('activity/index', compact('type','page_data'));
     }
     
     
