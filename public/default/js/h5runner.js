@@ -32,10 +32,10 @@ Vue.component('h5app',{
       current: -1
     };
   },
-  props: ['page', 'editor_mode'],
+  props: ['page', 'editor_mode', 'production'],
   // ============ 生命周期 ==============
   mounted:function(){
-    if( this.editor_mode ){
+    if( this.editor_mode || this.production ){
       this.play();
     }
   },

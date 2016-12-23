@@ -426,7 +426,8 @@ let previewVm = new Vue({
       ref: 'h5app',
       props: {
         page: this.store.page,
-        editor_mode: (store.mode == "editor")
+        editor_mode: (store.mode == "editor"),
+        production: false
       }
     });
     // Elements
