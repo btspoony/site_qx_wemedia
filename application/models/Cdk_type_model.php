@@ -48,6 +48,7 @@ class Cdk_type_model extends MY_Model {
             'type_status' => $params['type_status'],
             'type_code' => $params['type_code'],
             'type_url' => $params['type_url'],
+            'type_page' => $params['type_page'],
         );
         $data = $this->get_update_params($data);
         return $this->db->update(self::$_table, $data, compact('type_id'));
@@ -80,6 +81,7 @@ class Cdk_type_model extends MY_Model {
             'type_status'   => $params['type_status'],
             'type_code'   => $params['type_code'],
             'type_url'   => $params['type_url'],
+            'type_page'   => $params['type_page'],
             'is_del'        => NO_DEL
         );
         $data = $this->get_create_params($data);

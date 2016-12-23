@@ -27,6 +27,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">活动页面数据</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="type_page" ></textarea><span>运营人员找前端要数据<span>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">活动状态</label>
                             <div class="col-sm-10">
                                 <?php echo selectInput($status, $cdk_status['status_use_yes'], 'id', 'text', array('class' => 'form-control m-b', 'name' => 'type_status')); ?>

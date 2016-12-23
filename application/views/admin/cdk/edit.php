@@ -20,7 +20,12 @@
                             <label class="col-sm-2 control-label">活动描述</label>
                             <div class="col-sm-10"><input type="text" class="form-control" name="type_desc" maxlength="100" value="<?= set_value('type_desc'); ?>"></div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">活动页面数据</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="type_page" ><?= set_value('type_page'); ?></textarea><span>运营人员找前端要数据<span>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">活动状态</label>
                             <div class="col-sm-10">
