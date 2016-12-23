@@ -26,6 +26,7 @@ html, body, .main{
   margin-left: 370px;
   padding: 5px;
   height: 100%;
+  max-width: 560px;
 }
 #app >.nav{
   position: absolute;
@@ -34,6 +35,7 @@ html, body, .main{
 }
 #app >div{
   height: 100%;
+  max-height: 100%;
 
   padding-top: 51px;
 }
@@ -83,13 +85,19 @@ html, body, .main{
 #app .view-element-define.active {
   background-color: #dfd;
 }
-#app .view-element-define >div{
+#app .view-row >div{
   margin-bottom: 5px;
 }
-#app .view-element-define >div>div{
+#app .view-row >div>div{
   float:left;
   margin-right:5px;
 }
-#app .view-element-define >div>div:last-child{
+#app .view-row >div>div:last-child{
   margin-right:0px;
 }
+
+pre .json-string { color: green; }
+pre .json-number { color: darkorange; }
+pre .json-boolean { color: blue; }
+pre .json-null { color: magenta; }
+pre .json-key { color: red; }

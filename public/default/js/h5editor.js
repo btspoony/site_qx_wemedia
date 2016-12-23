@@ -49,10 +49,39 @@
   }
 })();
 
+/**
+ * 美化JSON显示
+ */
+function syntaxHighlight(json) {
+  if (typeof json != 'string') {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+    var cls = 'json-number';
+    if (/^"/.test(match)) {
+      if (/:$/.test(match)) {
+        cls = 'json-key';
+      } else {
+        cls = 'json-string';
+      }
+    } else if (/true|false/.test(match)) {
+      cls = 'json-boolean';
+    } else if (/null/.test(match)) {
+      cls = 'json-null';
+    }
+    return '<span class="' + cls + '">' + match + '</span>';
+  });
+}
+
 class ViewPage {
   constructor(){
     this.elements = [];
+    
     this.vars = {};
+    for( let i=0; i<10; i++ ){
+      this.vars['var'+i] = "";
+    }
   }
 
   clone(){
@@ -75,7 +104,7 @@ let store = {
     let obj = store.pages.map( function(page){
       return page.clone();
     });
-    return JSON.stringify( obj );
+    return syntaxHighlight(obj);
   }
 };
 
@@ -103,7 +132,7 @@ class BaseElement {
     this.anim_delay = 0;
 
     this.evt_enabled = false;
-    this.evt_by_load = false;
+    this.evt_be_hidden = false;
     this.evt_req_url = "";
     this.evt_save_var = "";
   }
@@ -157,6 +186,9 @@ class BaseElement {
   set anim_infinite(v){ this.cls['infinite'] = !!v; }
   get anim_infinite(){ return this.cls['infinite']; }
 
+  set anim_name(v){ this.data['anim_name'] = v; }
+  get anim_name(){ return this.data['anim_name']; }
+
   set anim_delay(v){
     this._delay = Number(v);
     this.style['animation-delay'] = this._delay+"s";
@@ -167,8 +199,9 @@ class BaseElement {
 
   set evt_enabled(v){ this.data['evt_enabled'] = !!v; }
   get evt_enabled(){ return this.data['evt_enabled']; }
-  set evt_by_load(v){ this.data['evt_by_load'] = !!v; }
-  get evt_by_load(){ return this.data['evt_by_load']; }
+
+  set evt_be_hidden(v){ this.data['evt_be_hidden'] = !!v; }
+  get evt_be_hidden(){ return this.data['evt_be_hidden']; }
   set evt_req_url(v){ this.data['evt_req_url'] = v; }
   get evt_req_url(){ return this.data['evt_req_url']; }
   set evt_save_var(v){ this.data['evt_save_var'] = v; }
@@ -286,7 +319,7 @@ let previewVm = new Vue({
       ref: 'h5app',
       props: {
         pages: this.store.pages,
-        autoplay: (store.mode == "editor")
+        editor_mode: (store.mode == "editor")
       }
     });
     // Elements
@@ -407,9 +440,6 @@ let vm = new Vue({
         pages: function(){ return store.pages; },
         currentPageData: function(){
           return store.pages[this.currentPage];
-        },
-        isEmpty: function(){
-          return this.currentPageData.elements.length == 0;
         }
       },
       methods: {
@@ -455,24 +485,32 @@ let vm = new Vue({
           elements.splice( toIndex, 0, originELements[0] );
         }
       },
-    },
+    },// end editing
     // 预览Tab组件
     preview: {
       template: '#tab-preview',
       mounted: function(){
         store.mode = "player";
       }, 
-      computed:{
-        result: function(){
-          return store.getPageJson();
-        }
-      },
       methods:{
         play: function(){
           previewVm.$emit("play");
         }
+      },
+      components: {
+        "preview-code": {
+          functional: true,
+          render: function (h, ctx) {
+            let dataDefine = {};
+            dataDefine.domProps = {
+              innerHTML: store.getPageJson()
+            };
+
+            return h('pre', dataDefine);
+          }
+        }// end preview-code
       }
-    },
+    },// end preview
   }
 
 });

@@ -11,9 +11,11 @@
         <link href="<?= jscss_path('css/animate.min.css'); ?>" rel="stylesheet">
         
         <script type="text/javascript">
-            type = '<?=$type?>';
-            site_url = '<?= get_url(); ?>';
-            img_base_url = '<?= image_path(''); ?>';
+            var envOpt = {
+                type: '<?=$type?>'
+            };
+            var site_url = '<?= get_url(); ?>';
+            var img_base_url = '<?= image_path(''); ?>';
         </script>
         <!--[if lt IE 9]>
         <meta http-equiv="refresh" content="0;ie.html" />

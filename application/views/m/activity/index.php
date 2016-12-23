@@ -8,13 +8,10 @@
 
     <?php load_view('elements/footer'); ?>
     <script type="text/javascript">
-         var data = {
-                type: type,
-            };
         function dianji() {
             $.ajax({
                 url: site_url + 'api/cdk/getcdkcode',
-                data: data,
+                data: envOpt,
                 type: 'post',
                 async: false,
                 cache: false,
