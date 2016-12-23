@@ -6,7 +6,7 @@
   width: 100%;
   max-height: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 #app .h5player{
   height: 100%;
