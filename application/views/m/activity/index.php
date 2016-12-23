@@ -19,9 +19,9 @@
             pageData: <?=$page_data?>
         },
         render: function (createElement) {
-            let dataDefine = { attrs: { id: 'app' } };
+            var dataDefine = { attrs: { id: 'app' } };
 
-            let h5app = createElement('h5app',{
+            var h5app = createElement('h5app',{
                 ref: 'h5app',
                 props: {
                     page: this.pageData,
