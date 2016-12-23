@@ -2,7 +2,9 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,height=device-height"/>
+        <meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta content="yes" name="apple-mobile-web-app-capable" />  
+        <meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
         <meta name="format-detection" content="telephone=no">
 
         <title>欢迎</title>

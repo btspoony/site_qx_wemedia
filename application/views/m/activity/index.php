@@ -4,8 +4,8 @@
   position: absolute;
   height: 100%;
   width: 100%;
-  overflow: hidden;
-  padding-bottom: 64px; /* 微信顶部 */
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 #app div{ position: absolute; }
 </style>
