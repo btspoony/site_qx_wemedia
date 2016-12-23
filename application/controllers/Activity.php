@@ -12,7 +12,7 @@ class Activity extends TOP_Controller{
         parent::__construct();
                 
         //微信验证
-        // $this->wx_wechat();
+        $this->wx_wechat();
         $this->load->model('cdk_type_model');
     }
     
