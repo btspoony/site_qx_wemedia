@@ -20,7 +20,7 @@
 <div id="app"></div>
 
 <script src="<?= jscss_path('js/vue/vue.min.js?v=2.1.6'); ?>"></script>
-<script src="<?= jscss_path('default/js/h5runner.js?v=0.1.0'); ?>"></script>
+<script src="<?= jscss_path('default/js/h5runner.js?v=0.1.1'); ?>"></script>
 <script type="text/javascript">
     var vm = new Vue({
         el: '#app',
