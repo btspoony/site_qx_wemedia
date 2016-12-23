@@ -1,6 +1,6 @@
 var envOpt = envOpt || {};
 
-const resultKeyPair = {
+const apiKeyPair = {
   'api/cdk/getcdkcode': {
     text: "领码",
     key: "cdk_code"
@@ -9,6 +9,10 @@ const resultKeyPair = {
     text: "查ID",
     key: "openid"
   },
+  'api/cdk/checkNoCdk': {
+    text: "查领完",
+    key: "empty"
+  }
 };
 
 const serverCode = {
@@ -25,11 +29,11 @@ Vue.component('h5app',{
   // ============ 属性 =================
   data: function(){
     return {
-      currentPage: 0,
+      current: 0,
       cleaner: false,
     };
   },
-  props: ['pages', 'editor_mode'],
+  props: ['page', 'editor_mode'],
   // ============ 生命周期 ==============
   mounted:function(){
     if( this.editor_mode ){
@@ -52,12 +56,13 @@ Vue.component('h5app',{
       return h("div");
     }
     
-    let pageData = this.pages[this.currentPage];
-    let children = pageData.elements.map(
+    let vars = this.page.vars;
+    let slide = this.page.slides[this.current];
+    let children = slide.elements.map(
       function( elementData ){
         return h("element-comp", {
           props: { 
-            pageVar: pageData.vars,
+            pageVar: vars,
             eleData: elementData,
             editor_mode: this.editor_mode
           }
@@ -128,7 +133,7 @@ Vue.component('element-comp',{
         }
 
         let api = eleData.data['evt_req_url'];
-        $.post( site_url + api, envOpt, handleData( resultKeyPair[api].key, eleData.data['evt_save_var'], pageVar ) );
+        $.post( site_url + api, envOpt, handleData( apiKeyPair[api].key, eleData.data['evt_save_var'], pageVar ) );
       };
       eleDefine.on = { "~click": func };
     }

@@ -34,10 +34,10 @@
     <div class="row editor-view">
       <ul class="view-toolbar">
         <li><span class="label label-info">页数</span></li>
-        <li v-for="(page, index) in pages">
+        <li v-for="(slide, index) in page.slides">
           <button type="button" class="btn btn-sm btn-default"
-            :class="{ active: (currentPage==index) }"
-            @click="currentPage = index">{{index+1}}</button>
+            :class="{ active: (currentSlide==index) }"
+            @click="currentSlide = index">{{index+1}}</button>
         </li>
         <li>
           <button type="button" class="btn btn-xs btn-success"
@@ -51,7 +51,7 @@
           <span class="glyphicon glyphicon-trash"></span>
         </button>
         <div class="panel-heading">
-          <span>第 {{currentPage+1}} 页</span>
+          <span>第 {{currentSlide+1}} 页</span>
         </div>
         <div class="panel-body">
           <div class="container-fluid">
@@ -63,7 +63,7 @@
                 <div>
                   <select class="form-control input-sm">
                     <option value="">无</option>
-                    
+                    <option v-for="(value, key) in apiKeyPair" :value="key">{{value.text}}</option>
                   </select>
                 </div>
                 <div>
@@ -78,12 +78,13 @@
             </div>
             
             <element-editor-comp
-              v-for="(element, index) in currentPageData.elements"
+              v-for="(element, index) in currentSlideData.elements"
               :key="element.id"
 
               :define="element"
               :index="index"
               :current="currentElement"
+              :apiKeyPair="apiKeyPair"
 
               @current="currentElement=arguments[0];"
               @move-element="moveElement(arguments[0], arguments[1]);"
@@ -335,7 +336,7 @@
           <div>
             <select class="form-control input-sm" v-model="define.evt_req_url">
               <option value="">无</option>
-              <option value="api/cdk/getcdkcode">领码</option>
+              <option v-for="(value, key) in apiKeyPair" :value="key">{{value.text}}</option>
             </select>
           </div>
           <div>

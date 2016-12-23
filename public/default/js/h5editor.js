@@ -74,20 +74,44 @@ function syntaxHighlight(json) {
   });
 }
 
-class ViewPage {
+class ViewSlide {
   constructor(){
     this.elements = [];
-    
+  }
+
+  clone(){
+    let obj = {};
+    obj.elements = this.elements.map(function(ele){
+      return ele.clone();
+    });
+    return obj;
+  }
+}
+
+class ViewPage {
+  constructor(){
+    this.slides = [ new ViewSlide() ];
+
     this.vars = {};
     for( let i=0; i<10; i++ ){
       this.vars['var'+i] = "";
     }
   }
 
+  addSlide(){
+    this.slides.push( new ViewSlide() );
+  }
+
   clone(){
-    return this.elements.map(function(ele){
-      return ele.clone();
+    let obj = {};
+    obj.slides = this.slides.map(function(slide){
+      return slide.clone();
     });
+    obj.vars = {};
+    for( let k in this.vars ){
+      obj.vars[k] = this.vars[k];
+    }
+    return obj;
   }
 }
 
@@ -98,22 +122,12 @@ let store = {
     element_index: 0,
     current_element_data: null,
   },
-  pages: [ new ViewPage() ],
-
-  getPageJson: function(){
-    let obj = store.pages.map( function(page){
-      return page.clone();
-    });
-    return syntaxHighlight(obj);
-  }
+  page: new ViewPage(),
 };
 
 class BaseElement {
-  constructor(page){
+  constructor(){
     this.id = store.cache.element_index++;
-    Object.defineProperty(this, 'page', {
-      value: page,
-    });
 
     this.style = {
       right: "auto",
@@ -212,8 +226,8 @@ class DivElement extends BaseElement {
   get type(){ return 'div'; }
   get typename(){ return '图层'; }
 
-  constructor(page){
-    super(page);
+  constructor(){
+    super();
     
     this._r = this._g = this._b = 0;
     this._a = 0.2;
@@ -246,8 +260,8 @@ class TextElement extends DivElement {
   get type(){ return 'text'; }
   get typename(){ return '文本'; }
 
-  constructor(page){
-    super(page);
+  constructor(){
+    super();
 
     this.data.text = "TEXT";
     this.data.type = "p";
@@ -271,8 +285,8 @@ class ImageElement extends BaseElement {
   get type(){ return 'image'; }
   get typename(){ return '图片'; }
   
-  constructor(page){
-    super(page);
+  constructor(){
+    super();
     
     this.style['background-repeat'] = "no-repeat";
     this.style['background-position'] = "center";
@@ -305,7 +319,7 @@ let previewVm = new Vue({
   },
   // ============ 属性 =================
   data: {
-    currentPage: 0,
+    currentSlide: 0,
     store: store
   },
   // ============ 渲染 =================
@@ -318,7 +332,7 @@ let previewVm = new Vue({
     let h5app = createElement('h5app',{
       ref: 'h5app',
       props: {
-        pages: this.store.pages,
+        page: this.store.page,
         editor_mode: (store.mode == "editor")
       }
     });
@@ -424,28 +438,29 @@ let vm = new Vue({
       }, 
       data: function(){
         return {
-          currentPage: 0,
+          currentSlide: 0,
           currentElement: -1,
+          apiKeyPair: apiKeyPair,
         };
       },
       watch: {
-        currentPage: function(currPage){
+        currentSlide: function(){
           store.cache.current_element_data = null;
         },
         currentElement: function (currEle) {
-          store.cache.current_element_data = ( currEle != -1 ) ? this.currentPageData.elements[currEle]: null;
+          store.cache.current_element_data = ( currEle != -1 ) ? this.currentSlideData.elements[currEle]: null;
         }
       },
       computed:{
-        pages: function(){ return store.pages; },
-        currentPageData: function(){
-          return store.pages[this.currentPage];
+        page: function(){ return store.page; },
+        currentSlideData: function(){
+          return store.page.slides[this.currentSlide];
         }
       },
       methods: {
         addPage: function(){
-          store.pages.push( new ViewPage() );
-          this.currentPage = store.pages.length - 1;
+          store.page.addSlide();
+          this.currentSlide = store.page.slides.length - 1;
         },
         addElement: function( type ){
           let newEl;
@@ -462,13 +477,13 @@ let vm = new Vue({
             default:
               return;
           }
-          this.currentPageData.elements.push( newEl );
+          this.currentSlideData.elements.push( newEl );
 
           // set current 
           if( this.currentElement< 0 ) this.currentElement = 0;
         },
         removeElement: function( index ){
-          let elements = this.currentPageData.elements;
+          let elements = this.currentSlideData.elements;
           elements.splice(index, 1);
 
           if( this.currentElement > 1 ){
@@ -480,7 +495,7 @@ let vm = new Vue({
           }
         },
         moveElement: function( fromIndex, toIndex ){
-          let elements = this.currentPageData.elements;
+          let elements = this.currentSlideData.elements;
           let originELements = elements.splice( fromIndex, 1 );
           elements.splice( toIndex, 0, originELements[0] );
         }
@@ -503,7 +518,7 @@ let vm = new Vue({
           render: function (h, ctx) {
             let dataDefine = {};
             dataDefine.domProps = {
-              innerHTML: store.getPageJson()
+              innerHTML: syntaxHighlight(store.page.clone())
             };
 
             return h('pre', dataDefine);
@@ -520,7 +535,7 @@ let vm = new Vue({
  */
 Vue.component('element-editor-comp', {
   template: "#element-editor-comp",
-  props: ["define","index","current"],
+  props: ["define","index","current","apiKeyPair"],
   methods: {
     onStartDrag: function( ev ){
       ev.dataTransfer.effectAllowed = "move";
