@@ -58,6 +58,12 @@ Vue.component('h5app',{
     play: function(){
       let self = this;
       self.current = -1;
+      
+      let vars = this.page.vars;
+      for( let k in vars ){
+        vars[k] = "";
+      }
+
       setTimeout( function(){
         self.current = 0;
       },100);
@@ -139,12 +145,10 @@ Vue.component('element-comp',{
     }
 
     // define condition
-    if( !!eleData.data['condition'] && !editor_mode ){
+    if( !!eleData.data['cond'] && !editor_mode ){
       let condVar = eleData.data['cond_var'];
       let condVisible = eleData.data['cond_visible'];
-      if( !!vars[condVar] ){
-        eleDefine['class'].hidden = !condVisible;
-      }
+      eleDefine['class'].hidden = !!condVisible ? !vars[condVar] : !!vars[condVar];
     }
 
     // define event 

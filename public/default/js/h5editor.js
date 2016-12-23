@@ -375,9 +375,10 @@ class ImageElement extends BaseElement {
     this.type = "image";
     
     this.style['background-repeat'] = "no-repeat";
-    this.style['background-position'] = "center";
-    this.style['background-size'] = "contain";
     this.style['background-image'] = "";
+
+    this.position = "center";
+    this.size = "contain";
   }
 
   set url( v ){
@@ -387,6 +388,12 @@ class ImageElement extends BaseElement {
     }
   }
   get url(){  return this._url; }
+
+  set size(v){ this.style['background-size'] = v; }
+  get size(){ return this.style['background-size']; }
+
+  set position(v){ this.style['background-position'] = v; }
+  get position(){ return this.style['background-position']; }
 }
 
 /**

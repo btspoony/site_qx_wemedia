@@ -117,7 +117,7 @@
   <div class="row view-row view-element-define"
       :class="{ active: (index===current) }"
       @click="$emit('current', index );"
-      @dragstart.capture="onStartDrag"
+      @dragstart="onStartDrag"
       @drop.prevent="onDrop" @dragover.prevent
       draggable=true >
       <div class="col-sm-1">
@@ -207,6 +207,21 @@
           <div class="input-group input-group-sm" style="width: 70%;">
             <span class="input-group-addon">地址</span>
             <input type="text" class="form-control" v-model="define.url">
+          </div>
+          <div>
+            <select class="form-control input-sm" v-model="define.size">
+              <option value="contain">容纳</option>
+              <option value="cover">撑满</option>
+            </select>
+          </div>
+          <div>
+            <select class="form-control input-sm" v-model="define.position">
+              <option value="center">居中</option>
+              <option value="top">顶对齐</option>
+              <option value="bottom">底对齐</option>
+              <option value="left">左对齐</option>
+              <option value="right">右对齐</option>
+            </select>
           </div>
         </div>
       </template>
@@ -379,7 +394,7 @@
           </div>
           <div>为真时</div>
           <div>
-            <label for="cond_visible"><input id="cond_visible" type="checkbox" v-model="define.cond_visible">
+            <label><input type="checkbox" v-model="define.cond_visible">
             <template v-if="define.cond_visible">显示</template>
             <template v-else>隐藏</template>
             </label>
