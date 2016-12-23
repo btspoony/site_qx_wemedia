@@ -221,12 +221,12 @@ class BaseElement {
   toggleH() { this._percentH = !this._percentH; this.h = this.h; }
 
   set x( v ) {
-    this.style.left = v+"px";
+    this.style.left = v+"%";
     this._x = v;
   }
   get x(){ return this._x; }
   set y( v ) {
-    this.style.top = v+"px";
+    this.style.top = v+"%";
     this._y = v;
   }
   get y(){ return this._y; }
@@ -452,9 +452,11 @@ let previewVm = new Vue({
 
           let drag_data = data.split(":");
           let paddingOffset = 10;
+          let max_height = 640;
+          let max_width = 360;
           store.cache.current_element_data.setOffset(
-              Math.round10(ev.x-drag_data[0]-paddingOffset,1),
-              Math.round10(ev.y-drag_data[1]-paddingOffset,1) );
+          Math.round10(ev.x-drag_data[0]-paddingOffset,1) / max_width * 100,
+              Math.round10(ev.y-drag_data[1]-paddingOffset,1) / max_height * 100 );
         },
         dragover: function( ev ){
           ev.preventDefault();
