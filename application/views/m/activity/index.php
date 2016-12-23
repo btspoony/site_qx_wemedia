@@ -5,6 +5,7 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+  padding-bottom: 64px; /* 微信顶部 */
 }
 #app div{ position: absolute; }
 </style>
