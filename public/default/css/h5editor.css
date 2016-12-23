@@ -15,6 +15,10 @@ html, body, .main{
 
   border: 2px solid #666;
 }
+#preview .h5player{
+  height: 100%;
+  width: 100%;
+}
 #preview div{
   position: absolute;
 }

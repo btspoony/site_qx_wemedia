@@ -94,10 +94,6 @@ global.VueH5App = Vue.component('h5app',{
     var dataDefine = {
       "class": {
         h5player: true,
-      },
-      style:{
-        width: "100%",
-        height: "100%"
       }
     };
 

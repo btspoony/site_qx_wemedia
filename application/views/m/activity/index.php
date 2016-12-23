@@ -4,7 +4,15 @@
   position: absolute;
   height: 100%;
   width: 100%;
+  max-height: 100%;
+  max-width: 100%;
   overflow-x: hidden;
+}
+#app .h5player{
+  height: 100%;
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
 }
 #app div{ position: absolute; }
 </style>
