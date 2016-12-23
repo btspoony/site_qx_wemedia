@@ -100,6 +100,20 @@ class ViewSlide {
     return obj;
   }
 }
+ViewSlide.create = function( obj ){
+  let newObj = {};
+  // 元素
+  newObj.elements = obj.elements.map(function(element){
+    return BaseElement.create(element);
+  });
+
+  // 配置变量
+  newObj.data = {};
+  for( let k in obj.data ){
+    newObj.data[k] = obj.data[k];
+  }
+  return newObj;
+}
 
 class ViewPage {
   constructor(){
@@ -109,6 +123,19 @@ class ViewPage {
     for( let i=0; i<10; i++ ){
       this.vars['var'+i] = "";
     }
+  }
+
+  loadFromObject( obj ){
+    if( !obj.slides || !obj.vars ) return;
+
+    // 配置变量
+    for( let k in obj.vars ){
+      this.vars[k] = obj.vars[k];
+    }
+    // 设置Slide
+    this.slides = obj.slides.map( function( slide ){
+      return ViewSlide.create( slide );
+    });
   }
 
   addSlide(){
@@ -179,6 +206,7 @@ class BaseElement {
         obj[j][k] = this[j][k];
       }
     }
+    obj.type = this.type||'';
     return obj;
   }
 
@@ -245,13 +273,42 @@ class BaseElement {
   set cond_visible(v){ this.data['cond_visible'] = !!v; }
   get cond_visible(){ return this.data['cond_visible']; }
 }
+BaseElement.create = function( obj ){
+  let type;
+  if( typeof obj === 'string' ){
+    type = obj;
+    obj = {};
+  }else{
+    type = obj.type;
+  }
+
+  let newEl;
+  switch (type) {
+    case 'div':
+      newEl = new DivElement();
+      break;
+    case 'text':
+      newEl = new TextElement();
+      break;
+    case 'image':
+      newEl = new ImageElement();
+      break;
+    default:
+      return;
+  }
+  // 设置对象
+  for(let k in obj ){
+    newEl[k] = obj[k];
+  }
+  return newEl;
+};
 
 class DivElement extends BaseElement {
-  get type(){ return 'div'; }
   get typename(){ return '图层'; }
 
   constructor(){
     super();
+    this.type = "div";
     
     this._r = this._g = this._b = 0;
     this._a = 0.2;
@@ -281,11 +338,11 @@ class DivElement extends BaseElement {
 }
 
 class TextElement extends DivElement {
-  get type(){ return 'text'; }
   get typename(){ return '文本'; }
 
   constructor(){
     super();
+    this.type = "text";
 
     this.data.text = "TEXT";
     this.data.type = "p";
@@ -306,11 +363,11 @@ class TextElement extends DivElement {
 }
 
 class ImageElement extends BaseElement {
-  get type(){ return 'image'; }
   get typename(){ return '图片'; }
   
   constructor(){
     super();
+    this.type = "image";
     
     this.style['background-repeat'] = "no-repeat";
     this.style['background-position'] = "center";
@@ -465,6 +522,7 @@ let vm = new Vue({
           currentSlide: 0,
           currentElement: -1,
           apiKeyPair: apiKeyPair,
+          pageName: 'default'
         };
       },
       watch: {
@@ -482,26 +540,21 @@ let vm = new Vue({
         }
       },
       methods: {
-        addPage: function(){
+        pageSave: function(){
+          localStorage.setItem( this.pageName, JSON.stringify(store.page) );
+        },
+        pageLoad: function(){
+          let item = localStorage.getItem( this.pageName );
+          if( !item ) return;
+          let dataObj = JSON.parse( item );
+          store.page.loadFromObject( dataObj );
+        },
+        addSlide: function(){
           store.page.addSlide();
           this.currentSlide = store.page.slides.length - 1;
         },
         addElement: function( type ){
-          let newEl;
-          switch (type) {
-            case 'div':
-              newEl = new DivElement();
-              break;
-            case 'text':
-              newEl = new TextElement();
-              break;
-            case 'image':
-              newEl = new ImageElement();
-              break;
-            default:
-              return;
-          }
-          this.currentSlideData.elements.push( newEl );
+          this.currentSlideData.elements.push( BaseElement.create( type ) );
 
           // set current 
           if( this.currentElement< 0 ) this.currentElement = 0;
@@ -522,6 +575,10 @@ let vm = new Vue({
           let elements = this.currentSlideData.elements;
           let originELements = elements.splice( fromIndex, 1 );
           elements.splice( toIndex, 0, originELements[0] );
+        },
+        clearElements: function(){
+          let elements = this.currentSlideData.elements;
+          elements.splice(0);
         }
       },
     },// end editing

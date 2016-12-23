@@ -23,11 +23,21 @@
 <script type="text/x-template" id="tab-editing">
   <div class="container-fluid">
     <!--工具栏-->
-    <div class="row editor-toolbar">
-      <div class="col-sm-12 btn-group">
+    <div class="editor-toolbar">
+      <div class="btn-group">
         <button type="button" class="btn btn-primary" @click="addElement('div')"><span class="glyphicon glyphicon-stop"></span></button>
         <button type="button" class="btn btn-primary" @click="addElement('text')"><span class="glyphicon glyphicon-font"></span></button>
         <button type="button" class="btn btn-primary" @click="addElement('image')"><span class="glyphicon glyphicon-picture"></span></button>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary" @click="pageSave"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+        <button type="button" class="btn btn-primary" @click="pageLoad"><span class="glyphicon glyphicon-open"></span></button>
+      </div>
+      <div style="float:right; width: 40%;">
+        <div class="input-group">
+          <span class="input-group-addon">保存名称</span>
+          <input type="text" class="form-control" v-model="pageName">
+        </div>
       </div>
     </div>
     <!--内容框体-->
@@ -41,7 +51,7 @@
         </li>
         <li>
           <button type="button" class="btn btn-xs btn-success"
-            @click="addPage" disabled="disabled">
+            @click="addSlide" disabled="disabled">
             <span class="glyphicon glyphicon-plus"></span></button>
         </li>
       </ul>
@@ -56,7 +66,7 @@
         <div class="panel-body">
           <div class="container-fluid">
             <div class="row view-row">
-              <div class="col-sm-12" style="line-height:30px;">
+              <div class="col-sm-9" style="line-height:30px;">
                 <div>
                   <label class="control-label text-right">加载</label>
                 </div>
@@ -74,6 +84,11 @@
                     <option v-for="n in 10" :value="'var'+(n-1)">页面变量{{ n-1 }}</option>
                   </select>
                 </div>
+              </div>
+              <div class="col-sm-3">
+                <button type="button" class="btn btn-warning" @click="clearElements">
+                  <span class="glyphicon glyphicon-eject"></span>清空元素
+                </button>
               </div>
             </div>
             
