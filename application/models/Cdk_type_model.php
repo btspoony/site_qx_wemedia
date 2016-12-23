@@ -138,7 +138,7 @@ class Cdk_type_model extends MY_Model {
      */
     function get_result_by_type_openid($openid = null) {
         if (empty($openid)) {
-            return false;
+            return array();
         }
         $sql = "select ck.type_name,c.cdk_code,c.cdk_receive_time from " . $this->table_name(self::$_table) . ' ck inner join ' . $this->table_name('cdk') . ' c on ck.type_id = c.type_id where c.openid = ? and ck.type_status =' . self::STATUS_USE_YES . ' and ck.is_del = ' . NO_DEL;
         return $this->db->query($sql,$openid)->result_array();

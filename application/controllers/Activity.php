@@ -31,9 +31,9 @@ class Activity extends TOP_Controller{
     /**
      * 查看活动领取的code
      */
-    function code() {
+    function mycodes() {
         $data = $this->cdk_type_model->get_result_by_type_openid($this->openid);
-        $this->load->view('activity/code', compact('data'));
+        $this->load->view('activity/mycodes', compact('data'));
     }
     
     
