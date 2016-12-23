@@ -379,17 +379,23 @@
 <script type="text/x-template" id="tab-preview">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-3">
         <h4>输出内容</h4>
       </div>
-      <div class="col-sm-6 text-right">
+      <div class="col-sm-5" style="line-height:35px;">
+        <label for="displayCode"><input id="displayCode" type="checkbox" v-model="syntax">
+        <template v-if="syntax">美化显示</template>
+        <template v-else>代码显示</template>
+        </label>
+      </div>
+      <div class="col-sm-4 text-right">
         <button type="button" class="btn btn-success" @click="play">
         <span class="glyphicon glyphicon-play"></span> 播放</button>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <preview-code></preview-code>
+        <preview-code :syntax="syntax"></preview-code>
       </div>
     </div>
   </div>

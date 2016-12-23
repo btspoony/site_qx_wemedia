@@ -530,7 +530,12 @@ let vm = new Vue({
       template: '#tab-preview',
       mounted: function(){
         store.mode = "player";
-      }, 
+      },
+      data: function(){
+        return {
+          syntax: true,
+        };
+      },
       methods:{
         play: function(){
           previewVm.$emit("play");
@@ -540,9 +545,12 @@ let vm = new Vue({
         "preview-code": {
           functional: true,
           render: function (h, ctx) {
-            let dataDefine = {};
-            dataDefine.domProps = {
-              innerHTML: syntaxHighlight(store.page.clone())
+            let syntax = ctx.data.attrs.syntax;
+            let dataObj = store.page.clone();
+            let dataHTML = syntax ? syntaxHighlight(dataObj) : JSON.stringify(dataObj);
+
+            let dataDefine = {
+              domProps: { innerHTML: dataHTML }
             };
 
             return h('pre', dataDefine);
