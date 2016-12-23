@@ -85,6 +85,6 @@ class Cdk extends TOP_Controller {
 //        if (empty($cdk_data)) {
 //            $this->lib_common->returnCdk(200);
 //        } 
-        $this->lib_common->returnCdk(200,array('empty' => empty($cdk_data)));
+        $this->lib_common->returnCdk(200,array('exists' => !empty($cdk_data)));
     }
 }
