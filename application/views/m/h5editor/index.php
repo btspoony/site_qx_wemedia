@@ -431,7 +431,7 @@
   </div>
 </script>
 
-<script src="<?= jscss_path('js/vue/vue'.(ENVIRONMENT == 'production'?'.min':'').'.js?v=2.1.6'); ?>"></script>
+<script src="<?= jscss_path('js/vue/vue.js?v=2.1.6'); ?>"></script>
 <script src="<?= jscss_path('default/js/h5runner.js'); ?>"></script>
 <script src="<?= jscss_path('default/js/h5editor.js'); ?>"></script>
 
