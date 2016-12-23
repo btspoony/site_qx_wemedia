@@ -582,8 +582,8 @@ let vm = new Vue({
           elements.splice( toIndex, 0, originELements[0] );
         },
         clearElements: function(){
-          let elements = this.currentSlideData.elements;
-          elements.splice(0);
+          this.currentSlideData.elements.splice(0);
+          this.currentElement = -1;
         }
       },
     },// end editing
