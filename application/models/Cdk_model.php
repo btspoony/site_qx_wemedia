@@ -65,7 +65,7 @@ class Cdk_model extends MY_Model {
             //总数
             $ret_data[$v['type_id']]['total'] = $v['count'];
             //已领取
-            $ret_data[$v['type_id']]['use_total'] = isset($use_no_data[$v['type_id']]) ? $use_no_data[$v['type_id']]['count'] : 0;
+            $ret_data[$v['type_id']]['use_total'] = isset($use_datas[$v['type_id']]) ? $use_datas[$v['type_id']]['count'] : 0;
             //未领取
             $ret_data[$v['type_id']]['use_no_total'] = $ret_data[$v['type_id']]['total'] - $ret_data[$v['type_id']]['use_total'];
         }
