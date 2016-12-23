@@ -1,6 +1,9 @@
-var envOpt = envOpt || {};
+(function (global) {
+'use strict';
 
-var apiKeyPair = {
+var envOpt = global.envOpt || {};
+
+var apiKeyPair = global.apiKeyPair = {
   'api/cdk/getcdkcode': {
     text: "领码",
     key: "cdk_code"
@@ -15,7 +18,7 @@ var apiKeyPair = {
   }
 };
 
-var serverCode = {
+var serverCode = global.serverCode = {
   208: "请刷新页面并在微信中打开",
   202: "Type为空",
   203: "不是有效的Type类型",
@@ -25,7 +28,7 @@ var serverCode = {
   207: "领取失败ヽ(｀Д´)ﾉ"
 };
 
-var VueH5App = Vue.component('h5app',{
+global.VueH5App = Vue.component('h5app',{
   // ============ 属性 =================
   data: function(){
     return {
@@ -102,7 +105,7 @@ var VueH5App = Vue.component('h5app',{
   }
 });
 
-var VueElementComp = Vue.component('element-comp',{
+var VueElementComp = global.VueElementComp = Vue.component('element-comp',{
   functional: true,
   render: function (h, ctx) {
     var vars = ctx.data.props.vars;
@@ -181,3 +184,5 @@ function handleData( resultKey, saveVarName, scope ){
     scope[saveVarName] = result;
   };
 }
+
+})(this);
