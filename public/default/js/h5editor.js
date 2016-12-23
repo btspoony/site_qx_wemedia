@@ -101,23 +101,28 @@ class ViewSlide {
   }
 }
 ViewSlide.create = function( obj ){
-  let newObj = {};
-  // 元素
-  newObj.elements = obj.elements.map(function(element){
-    return BaseElement.create(element);
-  });
+  obj = obj || {};
+  let newObj = new ViewSlide();
+  if( obj.elements ){
+    // 元素
+    newObj.elements = obj.elements.map(function(element){
+      return BaseElement.create(element);
+    });
+  }
 
-  // 配置变量
-  newObj.data = {};
-  for( let k in obj.data ){
-    newObj.data[k] = obj.data[k];
+  if( obj.data ){
+    // 配置变量
+    newObj.data = {};
+    for( let k in obj.data ){
+      newObj.data[k] = obj.data[k];
+    }
   }
   return newObj;
 }
 
 class ViewPage {
   constructor(){
-    this.slides = [ new ViewSlide() ];
+    this.slides = [ ViewSlide.create() ];
 
     this.vars = {};
     for( let i=0; i<10; i++ ){
@@ -139,7 +144,7 @@ class ViewPage {
   }
 
   addSlide(){
-    this.slides.push( new ViewSlide() );
+    this.slides.push( ViewSlide.create() );
   }
 
   clone(){
