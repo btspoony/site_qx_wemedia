@@ -29,8 +29,7 @@ Vue.component('h5app',{
   // ============ 属性 =================
   data: function(){
     return {
-      current: 0,
-      cleaner: false,
+      current: -1
     };
   },
   props: ['page', 'editor_mode'],
@@ -40,19 +39,33 @@ Vue.component('h5app',{
       this.play();
     }
   },
+  watch: {
+    current: function( value ){
+      if( value < 0 || this.editor_mode ) return;
+      
+      let vars = this.page.vars;
+      let slide = this.page.slides[value];
+
+      let api = slide.data['load_req_url'];
+      if( !api ) return;
+
+      let load_save_var = slide.data['load_save_var'];
+      $.post( site_url + api, envOpt, handleData( apiKeyPair[api].key, load_save_var, vars ) );
+    }
+  },
   // ============ 方法 =================
   methods:{
     play: function(){
-      this.cleaner = true;
       let self = this;
+      self.current = -1;
       setTimeout( function(){
-        self.cleaner = false;
+        self.current = 0;
       },100);
     }
   },
   // ============ 渲染 =================
   render: function (h) {
-    if( this.cleaner ){
+    if( this.current < 0 ){
       return h("div");
     }
     
@@ -62,7 +75,7 @@ Vue.component('h5app',{
       function( elementData ){
         return h("element-comp", {
           props: { 
-            pageVar: vars,
+            vars: vars,
             eleData: elementData,
             editor_mode: this.editor_mode
           }
@@ -86,7 +99,7 @@ Vue.component('h5app',{
 Vue.component('element-comp',{
   functional: true,
   render: function (h, ctx) {
-    let pageVar = ctx.data.props.pageVar;
+    let vars = ctx.data.props.vars;
     let eleData = ctx.data.props.eleData;
     let editor_mode = ctx.data.props.editor_mode;
 
@@ -117,7 +130,7 @@ Vue.component('element-comp',{
 
     // define child
     if( eleData.type === "text" ){
-      let text = eleData.data['useVar']? (pageVar[eleData.data['text']]||"(null)") :eleData.data['text'];
+      let text = eleData.data['useVar']? (vars[eleData.data['text']]||"(null)") :eleData.data['text'];
       let inner = h( eleData.data['type'], {
         "class": [ eleData.data['align'] ],
         domProps: { innerHTML: text },
@@ -133,7 +146,7 @@ Vue.component('element-comp',{
         }
 
         let api = eleData.data['evt_req_url'];
-        $.post( site_url + api, envOpt, handleData( apiKeyPair[api].key, eleData.data['evt_save_var'], pageVar ) );
+        $.post( site_url + api, envOpt, handleData( apiKeyPair[api].key, eleData.data['evt_save_var'], vars ) );
       };
       eleDefine.on = { "~click": func };
     }

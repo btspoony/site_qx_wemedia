@@ -61,7 +61,7 @@
                   <label class="control-label text-right">加载</label>
                 </div>
                 <div>
-                  <select class="form-control input-sm">
+                  <select class="form-control input-sm" v-model="currentSlideData.load_req_url">
                     <option value="">无</option>
                     <option v-for="(value, key) in apiKeyPair" :value="key">{{value.text}}</option>
                   </select>
@@ -70,7 +70,7 @@
                   <label class="control-label text-right">存入变量</label>
                 </div>
                 <div>
-                  <select class="form-control input-sm">
+                  <select class="form-control input-sm" v-model="currentSlideData.load_save_var">
                     <option v-for="n in 10" :value="'var'+(n-1)">页面变量{{ n-1 }}</option>
                   </select>
                 </div>

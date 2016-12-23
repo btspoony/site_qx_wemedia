@@ -77,13 +77,26 @@ function syntaxHighlight(json) {
 class ViewSlide {
   constructor(){
     this.elements = [];
+    this.data = {
+      load_req_url: "",
+      load_save_var: "",
+    };
   }
+
+  set load_req_url(v){ this.data['load_req_url'] = v; }
+  get load_req_url(){ return this.data['load_req_url']; }
+  set load_save_var(v){ this.data['load_save_var'] = v; }
+  get load_save_var(){ return this.data['load_save_var']; }
 
   clone(){
     let obj = {};
     obj.elements = this.elements.map(function(ele){
       return ele.clone();
     });
+    obj.data = {};
+    for( let k in this.data ){
+      obj.data[k] = this.data[k];
+    }
     return obj;
   }
 }
