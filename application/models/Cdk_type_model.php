@@ -9,36 +9,35 @@
 class Cdk_type_model extends MY_Model {
 
     static $_table = 'cdk_type';
- 
+
     const STATUS_USE_YES = 1;    //领取中
     const STATUS_USE_NO = 2;   //已关闭
-    
+
     function _config() {
         return array(
             'status_use_yes' => self::STATUS_USE_YES,
-            'status_use_no'   => self::STATUS_USE_NO,
+            'status_use_no' => self::STATUS_USE_NO,
         );
     }
-    
-    
+
     /**
      * 获取cdk类型
      * @param type $type_id
      * @return type
      */
     function get_cdk_type($type_id = null) {
-      $params = array(
-          'type_id' => $type_id,
-          'is_del' => NO_DEL
-      );
-      return $this->db->where($params)->get(self::$_table)->row_array();
+        $params = array(
+            'type_id' => $type_id,
+            'is_del' => NO_DEL
+        );
+        return $this->db->where($params)->get(self::$_table)->row_array();
     }
-    
+
     /**
      * 修改
      * @param type $data
      */
-    function modify_cdk($params = null,$type_id = null) {
+    function modify_cdk($params = null, $type_id = null) {
         if (empty($type_id)) {
             return false;
         }
@@ -53,7 +52,7 @@ class Cdk_type_model extends MY_Model {
         $data = $this->get_update_params($data);
         return $this->db->update(self::$_table, $data, compact('type_id'));
     }
-    
+
     /**
      * 修改
      * @param type $data
@@ -68,7 +67,7 @@ class Cdk_type_model extends MY_Model {
         $data = $this->get_update_params($data);
         return $this->db->update(self::$_table, $data, compact('type_id'));
     }
-    
+
     /**
      * 添加cdk
      * @param type $params
@@ -76,25 +75,25 @@ class Cdk_type_model extends MY_Model {
      */
     function add_cdk_type($params) {
         $data = array(
-            'type_name'     => $params['type_name'],
-            'type_desc'     => $params['type_desc'],
-            'type_status'   => $params['type_status'],
-            'type_code'   => $params['type_code'],
-            'type_url'   => $params['type_url'],
-            'type_page'   => $params['type_page'],
-            'is_del'        => NO_DEL
+            'type_name' => $params['type_name'],
+            'type_desc' => $params['type_desc'],
+            'type_status' => $params['type_status'],
+            'type_code' => $params['type_code'],
+            'type_url' => $params['type_url'],
+            'type_page' => $params['type_page'],
+            'is_del' => NO_DEL
         );
         $data = $this->get_create_params($data);
-        return $this->db->insert(self::$_table,$data);
+        return $this->db->insert(self::$_table, $data);
     }
-    
+
     function count_all() {
 //        $status = !empty($status) ? ' and ckd_status = ' . $status : null;
-        $sql = "select count(*) as count from ".  $this->table_name(self::$_table).'  where is_del='.NO_DEL;
+        $sql = "select count(*) as count from " . $this->table_name(self::$_table) . '  where is_del=' . NO_DEL;
         $data = $this->db->query($sql)->row_array();
         return $data['count'];
     }
-    
+
     /**
      * 获取所有数据
      * @param type $limit
@@ -103,7 +102,7 @@ class Cdk_type_model extends MY_Model {
     function get_cdk($limit = null) {
 //        $status = !empty($status) ? ' and ckd_status = ' . $status : null;
         $limit = !empty($limit) ? ' LIMIT ' . $limit : null;
-        $sql = "select * from ".  $this->table_name(self::$_table).' where is_del= '.NO_DEL.' order by create_time desc '.$limit;
+        $sql = "select * from " . $this->table_name(self::$_table) . ' where is_del= ' . NO_DEL . ' order by create_time desc ' . $limit;
         return $this->db->query($sql)->result_array();
     }
 
@@ -122,7 +121,7 @@ class Cdk_type_model extends MY_Model {
         );
         return $this->db->where($params)->get(self::$_table)->row_array();
     }
-  
+
     function get_result_by_type_code($type_code = null) {
         if (empty($type_code)) {
             return false;
@@ -132,6 +131,17 @@ class Cdk_type_model extends MY_Model {
             'type_code' => $type_code,
         );
         return $this->db->where($params)->get(self::$_table)->row_array();
+    }
+
+    /**
+     * 根据openid 获取用户领取的礼包码
+     */
+    function get_result_by_type_openid($openid = null) {
+        if (empty($openid)) {
+            return array();
+        }
+        $sql = "select ck.type_name,c.cdk_code,c.cdk_receive_time from " . $this->table_name(self::$_table) . ' ck inner join ' . $this->table_name('cdk') . ' c on ck.type_id = c.type_id where c.openid = ? and ck.type_status =' . self::STATUS_USE_YES . ' and ck.is_del = ' . NO_DEL;
+        return $this->db->query($sql,$openid)->result_array();
     }
 
 }

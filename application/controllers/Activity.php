@@ -10,8 +10,10 @@ class Activity extends TOP_Controller{
     
     function __construct() {
         parent::__construct();
-        //危险严重
-        $this->wx_wechat('&controller=activity&action=index');
+                
+        //微信验证
+        $this->wx_wechat();
+        $this->load->model('cdk_type_model');
     }
     
     /**
@@ -20,11 +22,18 @@ class Activity extends TOP_Controller{
      */
     function index() {
         $viewname = !empty($_GET['view']) ? $_GET['view'] : 'default';
-        $this->load->model('cdk_type_model');
         $data = $this->cdk_type_model->get_result_by_type_code($viewname);
         $type = !empty($data) ? $data['type_id'] : null;
         $page_data = !empty($data) ? $data['type_page'] : null;
         $this->load->view('activity/index', compact('type','page_data'));
+    }
+    
+    /**
+     * 查看活动领取的code
+     */
+    function mycodes() {
+        $data = $this->cdk_type_model->get_result_by_type_openid($this->openid);
+        $this->load->view('activity/mycodes', compact('data'));
     }
     
     
