@@ -7,7 +7,7 @@
         <meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
         <meta name="format-detection" content="telephone=no">
 
-        <title>欢迎</title>
+        <title>王与异界骑士<?= empty($type_name) ? "" : " - ".$type_name; ?></title>
         
         <link href="<?= jscss_path('css/bootstrap.min.css?v=3.3.6'); ?>" rel="stylesheet">
         <link href="<?= jscss_path('css/animate.min.css'); ?>" rel="stylesheet">
