@@ -5,6 +5,8 @@ if (!defined('BASEPATH'))
 
 class TOP_Controller extends CI_Controller {
 
+    
+    public $openid = null;
     public function __construct() {
 
         parent::__construct();
@@ -15,15 +17,19 @@ class TOP_Controller extends CI_Controller {
     /**
      * 微信验证
      */
-    public function wx_wechat($query_string) {
+    public function wx_wechat() {
         $openid = $this->session->userdata('openid');
         if (empty($openid)) {
+            $url = $this->uri->rsegments;
+            $query_string = "&controller={$url[1]}&action=".$url[2];
             $this->load->library('lib_wechat');
             $data = $this->lib_wechat->get_open_id(APPID, APPSECRET, $query_string);
             if (isset($data['openid'])) {
+                $openid = $data['openid'];
                 $this->session->set_userdata(array('openid' => $data['openid']));
             }
         }
+        $this->openid = $openid;
     }
 
     public function json_error($message = '', $code = 1) {
