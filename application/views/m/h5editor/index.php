@@ -115,6 +115,7 @@
         <label><input type="checkbox" v-model="define.animed"> 动画</label>
         <label v-show="define.animed"><input type="checkbox" v-model="define.anim_infinite"> 循环</label>
         <label><input type="checkbox" v-model="define.evt_enabled"> 事件</label>
+        <label><input type="checkbox" v-model="define.cond"> 条件</label>
       </div> 
       <div class="col-sm-2 text-right">
         <button type="button" class="btn btn-xs btn-danger"
@@ -351,9 +352,26 @@
             <label><input type="checkbox" v-model="define.evt_be_hidden"> 并隐藏</label>
           </div>
         </div>
-
       </template>
       <!-- end 点击模版 -->
+      <!-- 条件模版 -->
+      <template v-if="define.cond">
+        <div class="col-sm-12" style="line-height:30px;">
+          <div>
+            <select class="form-control input-sm" v-model="define.cond_var">
+              <option v-for="n in 10" :value="'var'+(n-1)">页面变量{{ n-1 }}</option>
+            </select>
+          </div>
+          <div>为真时</div>
+          <div>
+            <label for="cond_visible"><input id="cond_visible" type="checkbox" v-model="define.cond_visible">
+            <template v-if="define.cond_visible">显示</template>
+            <template v-else>隐藏</template>
+            </label>
+          </div>
+        </div>
+      </template>
+      <!-- end 条件模版 -->
   </div>
 </script>
 

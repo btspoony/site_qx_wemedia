@@ -162,6 +162,10 @@ class BaseElement {
     this.evt_be_hidden = false;
     this.evt_req_url = "";
     this.evt_save_var = "";
+
+    this.cond = false;
+    this.cond_visible = false;
+    this.cond_var = "";
   }
 
   clone(){
@@ -233,6 +237,13 @@ class BaseElement {
   get evt_req_url(){ return this.data['evt_req_url']; }
   set evt_save_var(v){ this.data['evt_save_var'] = v; }
   get evt_save_var(){ return this.data['evt_save_var']; }
+  
+  set cond(v){ this.data['cond'] = !!v; }
+  get cond(){ return this.data['cond']; }
+  set cond_var(v){ this.data['cond_var'] = v; }
+  get cond_var(){ return this.data['cond_var']; }
+  set cond_visible(v){ this.data['cond_visible'] = !!v; }
+  get cond_visible(){ return this.data['cond_visible']; }
 }
 
 class DivElement extends BaseElement {

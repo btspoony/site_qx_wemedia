@@ -11,7 +11,7 @@ const apiKeyPair = {
   },
   'api/cdk/checkNoCdk': {
     text: "查领完",
-    key: "empty"
+    key: "exists"
   }
 };
 
@@ -136,6 +136,15 @@ Vue.component('element-comp',{
         domProps: { innerHTML: text },
       });
       eleChildren.push( inner );
+    }
+
+    // define condition
+    if( !!eleData.data['condition'] && !editor_mode ){
+      let condVar = eleData.data['cond_var'];
+      let condVisible = eleData.data['cond_visible'];
+      if( !!vars[condVar] ){
+        eleDefine['class'].hidden = !condVisible;
+      }
     }
 
     // define event 
