@@ -21,7 +21,7 @@
         render: function (createElement) {
             var dataDefine = { attrs: { id: 'app' } };
 
-            var h5app = createElement('h5app',{
+            var h5app = createElement(VueH5App,{
                 ref: 'h5app',
                 props: {
                     page: this.pageData,

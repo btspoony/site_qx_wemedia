@@ -25,7 +25,7 @@ var serverCode = {
   207: "领取失败ヽ(｀Д´)ﾉ"
 };
 
-Vue.component('h5app',{
+var VueH5App = Vue.component('h5app',{
   // ============ 属性 =================
   data: function(){
     return {
@@ -79,7 +79,7 @@ Vue.component('h5app',{
     var slide = this.page.slides[this.current];
     var children = slide.elements.map(
       function( elementData ){
-        return h("element-comp", {
+        return h(VueElementComp, {
           props: { 
             vars: vars,
             eleData: elementData,
@@ -102,7 +102,7 @@ Vue.component('h5app',{
   }
 });
 
-Vue.component('element-comp',{
+var VueElementComp = Vue.component('element-comp',{
   functional: true,
   render: function (h, ctx) {
     var vars = ctx.data.props.vars;
