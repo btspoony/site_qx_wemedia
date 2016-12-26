@@ -14,7 +14,7 @@
         
         <script type="text/javascript">
             var envOpt = {
-                type: '<?=$type?>'
+                type: '<?= !empty($type) ? $type : '' ?>'
             };
             var site_url = '<?= get_url(); ?>';
             var img_base_url = '<?= image_path(''); ?>';
