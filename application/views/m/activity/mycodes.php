@@ -4,7 +4,7 @@
         width: 100%;
         height: 100%;
     }
-    
+
     body{
         background: url(<?= image_path('m/common/bj.jpg'); ?>) no-repeat top;
         background-size: cover;
@@ -54,11 +54,17 @@
     .codes-content .table>tbody>tr>td:first-child{
         text-align: left;
     }
-    
+
     .codes-footer{
         background: url(<?= image_path('m/common/frame_bottom.png'); ?>) no-repeat bottom;
         background-size: cover;
         padding-bottom: 10px;
+    }
+    .prompt{
+        color:#ffffff;
+        font-size: small;
+        float: left; 
+        text-align:left;
     }
 </style>
 
@@ -75,29 +81,41 @@
             <div class="col-xs-4"><strong>礼包代码</strong></div>
         </div>
         <div class="row codes-content">
-            <div class="col-xs-10 col-xs-offset-1"><div class="row">
-                <table class="table">
-                    <tbody>
-                        <tr>
+            <div class="col-xs-10 col-xs-offset-1">
+                <div class="row">
+                    <table class="table">
+                        <tbody>
                             <?php
                             if (!empty($data)) :
                                 foreach ($data as $k => $v) :
                                     ?>
-                                    <td><?= $v['type_name']; ?></td>
-                                    <td><?= $v['cdk_receive_time']; ?></td>
-                                    <td><?= $v['cdk_code']; ?></td>
+                                    <tr>
+                                        <td><?= $v['type_name']; ?></td>
+                                        <td><?= $v['cdk_receive_time']; ?></td>
+                                        <td><?= $v['cdk_code']; ?></td>
+                                    </tr>
                                     <?php
                                 endforeach;
                             else:
                                 ?>
-                                <td colspan="3">您还未礼包码</td>
+                                <tr>
+                                    <td colspan="3">您还未礼包码</td>
+                                </tr>
                             <?php
                             endif;
                             ?>
-                        </tr>
-                    </tbody>
-                </table>
-            </div></div>
+                        </tbody>
+                    </table>
+                    <div class="row prompt">
+                        <table>
+                            <tr>
+                                <td style="width:25%" valign="top"><b>友情提醒：</b></td>
+                                <td>获取游戏礼包请尽快登陆游戏兑换，逾期不补！</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row codes-footer"></div>
     </div>
