@@ -1,0 +1,21 @@
+http://wm.weixin.nicoworks.com/public/图片名称
+
+
+实际
+/m/Feb/图片名称
+
+
+/m/Feb/Android_background.jpg
+/m/Feb/Android_Android.png
+/m/Feb/Android_text.png
+/m/Feb/Button blank.png
+/m/Feb/Button.png
+/m/Feb/popup.png
+
+
+/m/Feb/iOS_background.jpg
+/m/Feb/iOS_iOS.png
+/m/Feb/iOS_text.png
+/m/Feb/Button blank.png
+/m/Feb/Button.png
+/m/Feb/popup.png
